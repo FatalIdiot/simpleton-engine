@@ -1,6 +1,6 @@
 rmdir /s /q "./build"
 cmake -S . -B build
-cmake --build build
+cmake --build build --parallel
 cd build/sandbox/Debug
 sandbox
 cd ../../..

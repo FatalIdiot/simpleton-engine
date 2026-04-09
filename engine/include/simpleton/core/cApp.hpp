@@ -11,9 +11,9 @@ namespace Simpleton {
             void Run();
 
         protected:
-            virtual void OnInit() {};
-            virtual void OnUpdate() {};
-            virtual void OnDestroy() {};
+            virtual void OnInit();
+            virtual void OnUpdate();
+            virtual void OnDestroy();
 
         private:
             struct AppImpl;
