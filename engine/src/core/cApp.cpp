@@ -1,9 +1,9 @@
-#include <simpleton/core/app.hpp>
-#include "../util/log.hpp"
+#include <simpleton/core/cApp.hpp>
+#include "../util/cLog.hpp"
 
 namespace Simpleton {
     struct CApp::AppImpl {
-        Logger logger;
+        cLogger logger;
     };
 
     CApp::CApp() {};
