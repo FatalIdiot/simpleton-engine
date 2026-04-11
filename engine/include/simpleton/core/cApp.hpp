@@ -9,6 +9,10 @@ namespace Simpleton {
             virtual ~CApp();
 
             void Run();
+            // Set flag to break engine internal and external loops in Run()
+            void Shutdown();
+            // Set flag to break engine internal loop in Run()
+            void Restart();
 
         protected:
             virtual void OnInit();
@@ -16,7 +20,10 @@ namespace Simpleton {
             virtual void OnDestroy();
 
         private:
+            // if false - breaks external engine loop in Run()
+            bool mIsRunning = true;
+
             struct AppImpl;
-            std::unique_ptr<AppImpl> pInternal;
+            std::unique_ptr<AppImpl> mpInternal;
     };
 }
