@@ -3,13 +3,10 @@
 #include <iostream>
 
 namespace Simpleton {
-    class cLogger {
-        private:
-            bool m_LogFile = false;
-
+    class CLogger {
         public:        
             template<typename T>
-            cLogger& operator<<(const T& value)
+            CLogger& operator<<(const T& value)
             {
                 std::cout << value;
                 return *this;

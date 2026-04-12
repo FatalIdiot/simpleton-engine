@@ -5,8 +5,5 @@ namespace Simpleton {
     class IManager {
         public:
             virtual ~IManager() = default;
-
-            virtual bool OnInit() = 0;
-            virtual void OnDestroy() = 0;
     };
 }

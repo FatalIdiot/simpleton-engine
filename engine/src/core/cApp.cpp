@@ -2,54 +2,28 @@
 #include "../managers/cWindowManager.hpp"
 #include "../util/cLog.hpp"
 
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-
 namespace Simpleton {
     struct CApp::AppImpl {
         unsigned int engineTicks = 0;
         bool isRunning = true;
         
-        cLogger logger;
+        CLogger logger;
     };
 
     CApp::CApp() {};
     CApp::~CApp() {};
 
     void CApp::OnInit() {
-        mpInternal->logger << "Engine Init...\n";
+        mpInternal->logger << "Engine init...\n";
+        mpInternal = std::make_unique<AppImpl>();
+
         mWindowManager = std::make_unique<CWindowManager>();
-        mWindowManager->OnInit();
-
-
-
-        glfwInit();
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-        // glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-
-        GLFWwindow* window = glfwCreateWindow(800, 600, "LearnOpenGL", NULL, NULL);
-        if (window == NULL)
-        {
-            mpInternal->logger << "Failed to create GLFW window.\n";
-            glfwTerminate();
-            return;
-        }
-        glfwMakeContextCurrent(window);
-
-        if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-        {
-            mpInternal->logger << "Failed to initialize GLAD.\n";
-            return;
-        }   
-
-        glViewport(0, 0, 800, 600);
+        static_cast<CWindowManager*>(mWindowManager.get())->OnInit(&(mpInternal->logger));
     };
 
     void CApp::OnDestroy() {
-        mpInternal->logger << "Engine Destroy...\n";
-        mWindowManager->OnDestroy();
+        mpInternal->logger << "Engine destroy...\n";
+        static_cast<CWindowManager*>(mWindowManager.get())->OnDestroy();
     };
 
     void CApp::OnUpdate() {
@@ -70,9 +44,6 @@ namespace Simpleton {
     void CApp::Run() {
         // External loop - used to restart engine without killing the process
         while(mIsRunning) {
-            // Allocate engine internals
-            mpInternal = std::make_unique<AppImpl>();
-
             CApp::OnInit();
             OnInit();
             for(int i = 0; i < 10; i++) {
