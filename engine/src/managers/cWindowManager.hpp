@@ -1,3 +1,5 @@
+#pragma once
+
 #include "simpleton/managers/iWindowManager.hpp"
 #include "../util/cLog.hpp"
 
@@ -7,12 +9,15 @@ namespace Simpleton
 {
     class CWindowManager : public IWindowManager
     {
-    public:
-        bool OnInit(std::shared_ptr<CLogger> logger);
-        void OnDestroy();
+        public:
+            CWindowManager() {};
+            ~CWindowManager() {};
 
-    private:
-        std::shared_ptr<CLogger> mpLogger;
-        GLFWwindow *mWindow;
+            bool OnInit(std::shared_ptr<CLogger> logger);
+            void OnDestroy();
+
+        private:
+            std::shared_ptr<CLogger> mpLogger;
+            GLFWwindow *mWindow;
     };
 }

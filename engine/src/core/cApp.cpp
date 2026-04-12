@@ -1,4 +1,4 @@
-#include "simpleton/core/cApp.hpp"
+#include "./cAppInternal.hpp"
 #include "../managers/cWindowManager.hpp"
 #include "../util/cLog.hpp"
 
@@ -18,12 +18,12 @@ namespace Simpleton {
         *mpInternal->logger << "Engine init...\n";
 
         mWindowManager = std::make_unique<CWindowManager>();
-        static_cast<CWindowManager*>(mWindowManager.get())->OnInit(mpInternal->logger);
+        mWindowManager->OnInit(mpInternal->logger);
     };
 
     void CApp::OnDestroy() {
         *mpInternal->logger << "Engine destroy...\n";
-        static_cast<CWindowManager*>(mWindowManager.get())->OnDestroy();
+        mWindowManager->OnDestroy();
     };
 
     void CApp::OnUpdate() {

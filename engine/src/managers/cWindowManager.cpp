@@ -36,6 +36,8 @@ namespace Simpleton {
     }
 
     void CWindowManager::OnDestroy() {
-        *mpLogger << "Window Manager destroy.\n";
+        *mpLogger << "Window Manager destroy...\n";
+        glfwDestroyWindow(mWindow);
+        glfwTerminate();
     }
 }

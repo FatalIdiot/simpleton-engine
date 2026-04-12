@@ -1,7 +1,7 @@
-// This is the public engine Simpleton header, the public interface to use in projects
+// This is the internal engine Simpleton header
 #pragma once
 
-#include "simpleton/managers/iWindowManager.hpp"
+#include "../managers/cWindowManager.hpp"
 #include <memory>
 
 namespace Simpleton {
@@ -16,14 +16,17 @@ namespace Simpleton {
             // Set flag to break engine internal loop in Run()
             void Restart();
 
-            std::unique_ptr<IWindowManager> mWindowManager;
-
+            std::unique_ptr<CWindowManager> mWindowManager;
+            
         protected:
             virtual void OnInit();
             virtual void OnUpdate();
             virtual void OnDestroy();
 
         private:
+            // if false - breaks external engine loop in Run()
+            bool mIsRunning = true;
+
             struct AppImpl;
             std::unique_ptr<AppImpl> mpInternal;
     };
