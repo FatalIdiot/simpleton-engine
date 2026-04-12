@@ -1,5 +1,6 @@
 #pragma once
 
+#include "simpleton/managers/iWindowManager.hpp"
 #include <memory>
 
 namespace Simpleton {
@@ -14,6 +15,7 @@ namespace Simpleton {
             // Set flag to break engine internal loop in Run()
             void Restart();
 
+            std::unique_ptr<IWindowManager> mWindowManager;
         protected:
             virtual void OnInit();
             virtual void OnUpdate();

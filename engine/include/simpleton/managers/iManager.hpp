@@ -1,11 +1,8 @@
 // Base class for future managers implementation
 #pragma once
 
-namespace Simpletop {
+namespace Simpleton {
     class IManager {
-        private:
-
-
         public:
             virtual ~IManager() = default;
 

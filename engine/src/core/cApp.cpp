@@ -1,5 +1,9 @@
-#include <simpleton/core/cApp.hpp>
+#include "simpleton/core/cApp.hpp"
+#include "../managers/cWindowManager.hpp"
 #include "../util/cLog.hpp"
+
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
 
 namespace Simpleton {
     struct CApp::AppImpl {
@@ -12,8 +16,41 @@ namespace Simpleton {
     CApp::CApp() {};
     CApp::~CApp() {};
 
-    void CApp::OnInit() {};
-    void CApp::OnDestroy() {};
+    void CApp::OnInit() {
+        mpInternal->logger << "Engine Init...\n";
+        mWindowManager = std::make_unique<CWindowManager>();
+        mWindowManager->OnInit();
+
+
+
+        glfwInit();
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        // glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+
+        GLFWwindow* window = glfwCreateWindow(800, 600, "LearnOpenGL", NULL, NULL);
+        if (window == NULL)
+        {
+            mpInternal->logger << "Failed to create GLFW window.\n";
+            glfwTerminate();
+            return;
+        }
+        glfwMakeContextCurrent(window);
+
+        if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+        {
+            mpInternal->logger << "Failed to initialize GLAD.\n";
+            return;
+        }   
+
+        glViewport(0, 0, 800, 600);
+    };
+
+    void CApp::OnDestroy() {
+        mpInternal->logger << "Engine Destroy...\n";
+        mWindowManager->OnDestroy();
+    };
 
     void CApp::OnUpdate() {
         mpInternal->engineTicks++;
@@ -33,6 +70,7 @@ namespace Simpleton {
     void CApp::Run() {
         // External loop - used to restart engine without killing the process
         while(mIsRunning) {
+            // Allocate engine internals
             mpInternal = std::make_unique<AppImpl>();
 
             CApp::OnInit();
@@ -42,6 +80,10 @@ namespace Simpleton {
                 CApp::OnUpdate();
                 OnUpdate();
             }
+
+            // Flag engine exit here for now
+            Shutdown();
+            
             OnDestroy();
             CApp::OnDestroy();
         }
