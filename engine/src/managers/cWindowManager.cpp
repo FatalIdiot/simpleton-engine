@@ -4,9 +4,9 @@
 #include <GLFW/glfw3.h>
 
 namespace Simpleton {
-    bool CWindowManager::OnInit(CLogger* logger) {
-        *mpLogger << "Window Manager init...\n";
+    bool CWindowManager::OnInit(std::shared_ptr<CLogger> logger) {
         mpLogger = logger;
+        *mpLogger << "Window Manager init...\n";
 
         glfwInit();
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);

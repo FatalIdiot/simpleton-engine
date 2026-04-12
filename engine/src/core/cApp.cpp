@@ -7,22 +7,22 @@ namespace Simpleton {
         unsigned int engineTicks = 0;
         bool isRunning = true;
         
-        CLogger logger;
+        std::shared_ptr<CLogger> logger = std::make_shared<CLogger>();
     };
 
     CApp::CApp() {};
     CApp::~CApp() {};
 
     void CApp::OnInit() {
-        mpInternal->logger << "Engine init...\n";
         mpInternal = std::make_unique<AppImpl>();
+        *mpInternal->logger << "Engine init...\n";
 
         mWindowManager = std::make_unique<CWindowManager>();
-        static_cast<CWindowManager*>(mWindowManager.get())->OnInit(&(mpInternal->logger));
+        static_cast<CWindowManager*>(mWindowManager.get())->OnInit(mpInternal->logger);
     };
 
     void CApp::OnDestroy() {
-        mpInternal->logger << "Engine destroy...\n";
+        *mpInternal->logger << "Engine destroy...\n";
         static_cast<CWindowManager*>(mWindowManager.get())->OnDestroy();
     };
 
@@ -31,13 +31,13 @@ namespace Simpleton {
     }
 
     void CApp::Shutdown() {
-        mpInternal->logger << "Shutting engine down...\n";
+        *mpInternal->logger << "Shutting engine down...\n";
         mpInternal->isRunning = false;
         mIsRunning = false;
     }
 
     void CApp::Restart() {
-        mpInternal->logger << "Restarting engine...\n";
+        *mpInternal->logger << "Restarting engine...\n";
         mpInternal->isRunning = false;
     }
 
@@ -47,7 +47,7 @@ namespace Simpleton {
             CApp::OnInit();
             OnInit();
             for(int i = 0; i < 10; i++) {
-                mpInternal->logger << mpInternal->engineTicks << " ticks" << "\n";
+                *mpInternal->logger << mpInternal->engineTicks << " ticks" << "\n";
                 CApp::OnUpdate();
                 OnUpdate();
             }

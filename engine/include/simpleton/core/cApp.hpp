@@ -16,6 +16,7 @@ namespace Simpleton {
             void Restart();
 
             std::unique_ptr<IWindowManager> mWindowManager;
+            
         protected:
             virtual void OnInit();
             virtual void OnUpdate();

@@ -8,11 +8,11 @@ namespace Simpleton
     class CWindowManager : public IWindowManager
     {
     public:
-        bool OnInit(CLogger* logger);
+        bool OnInit(std::shared_ptr<CLogger> logger);
         void OnDestroy();
 
     private:
-        CLogger* mpLogger;
+        std::shared_ptr<CLogger> mpLogger;
         GLFWwindow *mWindow;
     };
 }
