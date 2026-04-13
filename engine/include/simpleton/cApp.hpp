@@ -2,11 +2,13 @@
 
 #include "simpleton/managers/iWindowManager.hpp"
 #include <memory>
+#include <string>
 
 namespace Simpleton {
     class CApp {
         public:
-            CApp();
+            CApp() = delete;
+            CApp(unsigned int wWidth, unsigned int wHeight, std::string windowName);
             virtual ~CApp();
 
             void Run();

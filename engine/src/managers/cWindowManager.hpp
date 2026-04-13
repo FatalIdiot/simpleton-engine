@@ -13,7 +13,7 @@ namespace Simpleton
             CWindowManager() {};
             ~CWindowManager() {};
 
-            bool OnInit(std::shared_ptr<CLogger> logger);
+            bool OnInit(unsigned int wWidth, unsigned int wHeight, std::string windowName, std::shared_ptr<CLogger> logger);
             void OnDestroy();
 
         private:

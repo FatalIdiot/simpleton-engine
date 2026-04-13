@@ -10,12 +10,19 @@ namespace Simpleton {
         // if false - breaks internal engine loop in Run() to restart engine
         bool isInternalRunning = true;
         
+        // Internal vars for window creation to pass from constructor to manager init
+        unsigned int wWidth, wHeight;
+        std::string windowName;
+
         std::shared_ptr<CLogger> logger;
         std::shared_ptr<CWindowManager> windowManager;
     };
 
-    CApp::CApp() {
+    CApp::CApp(unsigned int wWidth, unsigned int wHeight, std::string windowName) {
         mpImplem = std::make_unique<AppImpl>();
+        mpImplem->wWidth = wWidth;
+        mpImplem->wHeight = wHeight;
+        mpImplem->windowName = windowName;
     };
     CApp::~CApp() {};
 
@@ -25,7 +32,7 @@ namespace Simpleton {
 
         mpImplem->windowManager = std::make_shared<CWindowManager>();
         mWindowManager = mpImplem->windowManager;
-        mpImplem->windowManager->OnInit(mpImplem->logger);
+        mpImplem->windowManager->OnInit(mpImplem->wWidth, mpImplem->wHeight, mpImplem->windowName, mpImplem->logger);
     };
 
     void CApp::OnDestroy() {

@@ -4,7 +4,9 @@
 #include <GLFW/glfw3.h>
 
 namespace Simpleton {
-    bool CWindowManager::OnInit(std::shared_ptr<CLogger> logger) {
+    bool CWindowManager::OnInit(unsigned int wWidth, unsigned int wHeight, std::string windowName,
+            std::shared_ptr<CLogger> logger) 
+    {
         mpLogger = logger;
         *mpLogger << "Window Manager init...\n";
 
@@ -14,7 +16,7 @@ namespace Simpleton {
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
         // glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
-        mWindow = glfwCreateWindow(800, 600, "LearnOpenGL", NULL, NULL);
+        mWindow = glfwCreateWindow(wWidth, wHeight, windowName.c_str(), NULL, NULL);
         if (mWindow == NULL)
         {
             *mpLogger << "Failed to create GLFW window.\n";

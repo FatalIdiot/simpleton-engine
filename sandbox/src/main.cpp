@@ -1,8 +1,10 @@
 #include <simpleton/cApp.hpp>
 #include <iostream>
 
-class SanboxApp : public Simpleton::CApp {
+class SandboxApp : public Simpleton::CApp {
     public:
+        SandboxApp(unsigned int wWidth, unsigned int wHeight, std::string windowName)
+            : Simpleton::CApp(wWidth, wHeight, windowName) {}
 
     protected:
         void OnInit() override {
@@ -21,8 +23,8 @@ class SanboxApp : public Simpleton::CApp {
 int main() {
     std::cout << "\n\n..:: Simpleton Sandbox Start ::..\n";
 
-    SanboxApp SanboxApp{};
-    SanboxApp.Run();
+    SandboxApp SandboxApp{800, 600, "Test"};
+    SandboxApp.Run();
 
     std::cout << "..:: Simpleton Sandbox End ::..\n\n";
     return 0;
