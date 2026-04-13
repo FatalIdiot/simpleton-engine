@@ -1,53 +1,60 @@
-#include "./cAppInternal.hpp"
+#include "simpleton/cApp.hpp"
 #include "../managers/cWindowManager.hpp"
 #include "../util/cLog.hpp"
 
 namespace Simpleton {
     struct CApp::AppImpl {
         unsigned int engineTicks = 0;
-        bool isRunning = true;
+        // if false - breaks external engine loop in Run()
+        bool isExternalRunning = true;
+        // if false - breaks internal engine loop in Run() to restart engine
+        bool isInternalRunning = true;
         
-        std::shared_ptr<CLogger> logger = std::make_shared<CLogger>();
+        std::shared_ptr<CLogger> logger;
+        std::shared_ptr<CWindowManager> windowManager;
     };
 
-    CApp::CApp() {};
+    CApp::CApp() {
+        mpImplem = std::make_unique<AppImpl>();
+    };
     CApp::~CApp() {};
 
     void CApp::OnInit() {
-        mpInternal = std::make_unique<AppImpl>();
-        *mpInternal->logger << "Engine init...\n";
+        mpImplem->logger = std::make_shared<CLogger>();
+        *mpImplem->logger << "Engine init...\n";
 
-        mWindowManager = std::make_unique<CWindowManager>();
-        mWindowManager->OnInit(mpInternal->logger);
+        mpImplem->windowManager = std::make_shared<CWindowManager>();
+        mWindowManager = mpImplem->windowManager;
+        mpImplem->windowManager->OnInit(mpImplem->logger);
     };
 
     void CApp::OnDestroy() {
-        *mpInternal->logger << "Engine destroy...\n";
-        mWindowManager->OnDestroy();
+        *mpImplem->logger << "Engine destroy...\n";
+        mpImplem->windowManager->OnDestroy();
     };
 
     void CApp::OnUpdate() {
-        mpInternal->engineTicks++;
+        mpImplem->engineTicks++;
     }
 
     void CApp::Shutdown() {
-        *mpInternal->logger << "Shutting engine down...\n";
-        mpInternal->isRunning = false;
-        mIsRunning = false;
+        *mpImplem->logger << "Shutting engine down...\n";
+        mpImplem->isExternalRunning = false;
+        mpImplem->isInternalRunning = false;
     }
 
     void CApp::Restart() {
-        *mpInternal->logger << "Restarting engine...\n";
-        mpInternal->isRunning = false;
+        *mpImplem->logger << "Restarting engine...\n";
+        mpImplem->isInternalRunning = false;
     }
 
     void CApp::Run() {
         // External loop - used to restart engine without killing the process
-        while(mIsRunning) {
+        while(mpImplem->isExternalRunning) {
             CApp::OnInit();
             OnInit();
             for(int i = 0; i < 10; i++) {
-                *mpInternal->logger << mpInternal->engineTicks << " ticks" << "\n";
+                *mpImplem->logger << mpImplem->engineTicks << " ticks" << "\n";
                 CApp::OnUpdate();
                 OnUpdate();
             }

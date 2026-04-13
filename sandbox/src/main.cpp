@@ -1,4 +1,4 @@
-#include <simpleton/core/cApp.hpp>
+#include <simpleton/cApp.hpp>
 #include <iostream>
 
 class SanboxApp : public Simpleton::CApp {
