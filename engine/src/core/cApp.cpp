@@ -25,6 +25,12 @@ namespace Simpleton {
         mpImplem->wWidth = wWidth;
         mpImplem->wHeight = wHeight;
         mpImplem->windowName = windowName;
+
+        mpImplem->windowManager = std::make_shared<CWindowManager>();
+        mWindowManager = mpImplem->windowManager;
+
+        mpImplem->inputManager = std::make_shared<CInputManager>(&mStoredInputBindings);
+        mInputManager = mpImplem->inputManager;
     };
     CApp::~CApp() {};
 
@@ -32,12 +38,7 @@ namespace Simpleton {
         mpImplem->logger = std::make_shared<CLogger>();
         *mpImplem->logger << "Engine init...\n";
 
-        mpImplem->windowManager = std::make_shared<CWindowManager>();
-        mWindowManager = mpImplem->windowManager;
         mpImplem->windowManager->OnInit(mpImplem->wWidth, mpImplem->wHeight, mpImplem->windowName, mpImplem->logger);
-
-        mpImplem->inputManager = std::make_shared<CInputManager>();
-        mInputManager = mpImplem->inputManager;
         mpImplem->inputManager->OnInit(mpImplem->windowManager->GetWindow(), mpImplem->logger);
     };
 
@@ -67,7 +68,7 @@ namespace Simpleton {
         while(mpImplem->isExternalRunning) {
             CApp::OnInit();
             OnInit();
-            // for(int i = 0; i < 10; i++) {
+            
             while(mpImplem->isInternalRunning) {
                 *mpImplem->logger << mpImplem->engineTicks << " ticks" << "\n";
                 CApp::OnUpdate();

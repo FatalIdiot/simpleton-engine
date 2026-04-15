@@ -5,6 +5,5 @@
 namespace Simpleton {
     class IWindowManager : public IManager {
         public:
-            ~IWindowManager() = default;
     };
 }

@@ -4,6 +4,5 @@
 namespace Simpleton {
     class IManager {
         public:
-            virtual ~IManager() = default;
     };
 }

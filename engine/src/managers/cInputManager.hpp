@@ -10,7 +10,8 @@
 namespace Simpleton {
     class CInputManager : public IInputManager {
         public:
-            CInputManager() {};
+            CInputManager() = delete;
+            CInputManager(std::map<int, std::function<void()>> *storedBindings);
             ~CInputManager() {};
 
             bool OnInit(GLFWwindow *window, std::shared_ptr<CLogger> logger);
@@ -21,8 +22,11 @@ namespace Simpleton {
             void RemoveBinding(int key) override; 
 
         private:
+            bool mIsInitialized = false;
+
             std::shared_ptr<CLogger> mpLogger;
             GLFWwindow *mWindow;
+            std::map<int, std::function<void()>> *mpStoredBindings = nullptr;
             std::map<int, std::function<void()>> mBindings;
     };
 }
