@@ -1,5 +1,6 @@
 #include "simpleton/cApp.hpp"
 #include "../managers/cWindowManager.hpp"
+#include "../managers/cInputManager.hpp"
 #include "../util/cLog.hpp"
 
 namespace Simpleton {
@@ -16,6 +17,7 @@ namespace Simpleton {
 
         std::shared_ptr<CLogger> logger;
         std::shared_ptr<CWindowManager> windowManager;
+        std::shared_ptr<CInputManager> inputManager;
     };
 
     CApp::CApp(unsigned int wWidth, unsigned int wHeight, std::string windowName) {
@@ -33,6 +35,10 @@ namespace Simpleton {
         mpImplem->windowManager = std::make_shared<CWindowManager>();
         mWindowManager = mpImplem->windowManager;
         mpImplem->windowManager->OnInit(mpImplem->wWidth, mpImplem->wHeight, mpImplem->windowName, mpImplem->logger);
+
+        mpImplem->inputManager = std::make_shared<CInputManager>();
+        mInputManager = mpImplem->inputManager;
+        mpImplem->inputManager->OnInit(mpImplem->windowManager->GetWindow(), mpImplem->logger);
     };
 
     void CApp::OnDestroy() {
@@ -42,6 +48,7 @@ namespace Simpleton {
 
     void CApp::OnUpdate() {
         mpImplem->engineTicks++;
+        mpImplem->inputManager->PollEvents();
     }
 
     void CApp::Shutdown() {
@@ -60,7 +67,8 @@ namespace Simpleton {
         while(mpImplem->isExternalRunning) {
             CApp::OnInit();
             OnInit();
-            for(int i = 0; i < 10; i++) {
+            // for(int i = 0; i < 10; i++) {
+            while(mpImplem->isInternalRunning) {
                 *mpImplem->logger << mpImplem->engineTicks << " ticks" << "\n";
                 CApp::OnUpdate();
                 OnUpdate();

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "simpleton/managers/iWindowManager.hpp"
+#include "simpleton/managers/iInputManager.hpp"
 #include <memory>
 #include <string>
 
@@ -18,6 +19,7 @@ namespace Simpleton {
             void Restart();
 
             std::shared_ptr<IWindowManager> mWindowManager;
+            std::shared_ptr<IInputManager> mInputManager;
             
         protected:
             virtual void OnInit();

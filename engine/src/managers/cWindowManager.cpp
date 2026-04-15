@@ -42,4 +42,8 @@ namespace Simpleton {
         glfwDestroyWindow(mWindow);
         glfwTerminate();
     }
+
+    GLFWwindow* CWindowManager::GetWindow() {
+        return mWindow;
+    }
 }
