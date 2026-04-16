@@ -2,6 +2,8 @@
 #pragma once
 
 namespace Simpleton {
-    class IManager {
+    class IManagerInternal {
+        public:
+            bool mIsInitialized = false;
     };
 }

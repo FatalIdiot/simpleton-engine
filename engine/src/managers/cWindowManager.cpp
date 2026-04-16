@@ -34,6 +34,7 @@ namespace Simpleton {
         glViewport(0, 0, 800, 600);
 
         *mpLogger << "Window initialized.\n";
+        mIsInitialized = true;
         return true;
     }
 

@@ -4,14 +4,16 @@ namespace Simpleton {
     bool CInputManager::OnInit(GLFWwindow *window, std::shared_ptr<CLogger> logger) {
         *mpLogger << "Input Manager init...\n";
         mWindow = window;
-        *mpLogger << "Inputs initialized.\n";
 
+        *mpLogger << "Inputs initialized.\n";
         mIsInitialized = true;
 
         for (const auto& [key, func] : mStoredBindings) {
             AddBinding(key, func);
         }
         mStoredBindings.clear();
+        *mpLogger << "Input bindings added from storage.\n";
+
         return true;
     };
     void CInputManager::OnDestroy() {

@@ -1,13 +1,14 @@
 #pragma once
 
 #include "simpleton/managers/iWindowManager.hpp"
+#include "./iManagerInternal.hpp"
 #include "../util/cLog.hpp"
 
 typedef struct GLFWwindow GLFWwindow;
 
 namespace Simpleton
 {
-    class CWindowManager : public IWindowManager
+    class CWindowManager : public IWindowManager, IManagerInternal
     {
         public:
             CWindowManager() {};

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "simpleton/managers/iInputManager.hpp"
+#include "./iManagerInternal.hpp"
 #include "../util/cLog.hpp"
 
 #include <map>
@@ -8,7 +9,8 @@
 #include <GLFW/glfw3.h>
 
 namespace Simpleton {
-    class CInputManager : public IInputManager {
+    class CInputManager : public IInputManager, IManagerInternal 
+    {
         public:
             ~CInputManager() {};
 
@@ -20,10 +22,11 @@ namespace Simpleton {
             void RemoveBinding(int key) override; 
 
         private:
-            bool mIsInitialized = false;
+            // bool mIsInitialized = false;
 
             std::shared_ptr<CLogger> mpLogger;
             GLFWwindow *mWindow;
+
             // Store input binding from game before manager is initialized
             std::map<int, std::function<void()>> mStoredBindings;
             std::map<int, std::function<void()>> mBindings;
