@@ -2,6 +2,7 @@
 
 namespace Simpleton {
     bool CInputManager::OnInit(GLFWwindow *window, std::shared_ptr<CLogger> logger) {
+        mpLogger = logger;
         *mpLogger << "Input Manager init...\n";
         mWindow = window;
 
