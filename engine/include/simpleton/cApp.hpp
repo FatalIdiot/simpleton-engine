@@ -19,9 +19,6 @@ namespace Simpleton {
             // Set flag to break engine internal loop in Run()
             void Restart();
 
-            // Collection of inputs that is passed from the game to input manager before systems init
-            std::map<int, std::function<void()>> mStoredInputBindings;
-
             std::shared_ptr<IWindowManager> mWindowManager;
             std::shared_ptr<IInputManager> mInputManager;
             

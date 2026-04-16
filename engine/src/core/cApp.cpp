@@ -29,7 +29,7 @@ namespace Simpleton {
         mpImplem->windowManager = std::make_shared<CWindowManager>();
         mWindowManager = mpImplem->windowManager;
 
-        mpImplem->inputManager = std::make_shared<CInputManager>(&mStoredInputBindings);
+        mpImplem->inputManager = std::make_shared<CInputManager>();
         mInputManager = mpImplem->inputManager;
     };
     CApp::~CApp() {};

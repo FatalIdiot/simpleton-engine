@@ -1,10 +1,6 @@
 #include "./cInputManager.hpp"
 
 namespace Simpleton {
-    CInputManager::CInputManager(std::map<int, std::function<void()>> *storedBindings) {
-        mpStoredBindings = storedBindings;
-    }
-
     bool CInputManager::OnInit(GLFWwindow *window, std::shared_ptr<CLogger> logger) {
         *mpLogger << "Input Manager init...\n";
         mWindow = window;
@@ -12,10 +8,10 @@ namespace Simpleton {
 
         mIsInitialized = true;
 
-        for (const auto& [key, func] : *mpStoredBindings) {
+        for (const auto& [key, func] : mStoredBindings) {
             AddBinding(key, func);
         }
-        mpStoredBindings->clear();
+        mStoredBindings.clear();
         return true;
     };
     void CInputManager::OnDestroy() {
@@ -25,7 +21,7 @@ namespace Simpleton {
     void CInputManager::AddBinding(int key, std::function<void()> func) {
         if(!mIsInitialized) { // if not initialized - store bindings to bind once system is up
             *mpLogger << "Storing binding for key " << key << "\n";
-            (*mpStoredBindings)[key] = func;
+            mStoredBindings[key] = func;
         } else { // if is already initialized - add binding
             *mpLogger << "Adding binding for key " << key << "\n";
             mBindings[key] = func;

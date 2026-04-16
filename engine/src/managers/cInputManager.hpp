@@ -10,8 +10,6 @@
 namespace Simpleton {
     class CInputManager : public IInputManager {
         public:
-            CInputManager() = delete;
-            CInputManager(std::map<int, std::function<void()>> *storedBindings);
             ~CInputManager() {};
 
             bool OnInit(GLFWwindow *window, std::shared_ptr<CLogger> logger);
@@ -26,7 +24,8 @@ namespace Simpleton {
 
             std::shared_ptr<CLogger> mpLogger;
             GLFWwindow *mWindow;
-            std::map<int, std::function<void()>> *mpStoredBindings = nullptr;
+            // Store input binding from game before manager is initialized
+            std::map<int, std::function<void()>> mStoredBindings;
             std::map<int, std::function<void()>> mBindings;
     };
 }
