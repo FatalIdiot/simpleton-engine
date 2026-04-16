@@ -24,7 +24,7 @@ int main() {
     std::cout << "\n\n..:: Simpleton Sandbox Start ::..\n";
 
     SandboxApp SandboxApp{800, 600, "Test"};
-    SandboxApp.mInputManager->AddBinding(256, [&SandboxApp]() -> void {
+    SandboxApp.mInputManager->AddBinding(KEY_ESCAPE, [&SandboxApp]() -> void {
         SandboxApp.Shutdown();
     });
     SandboxApp.Run();
