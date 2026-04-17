@@ -1,4 +1,6 @@
 #include "simpleton/cApp.hpp"
+#include "./AppImpl.hpp"
+
 #include "../managers/cWindowManager.hpp"
 #include "../managers/cEventManager.hpp"
 #include "../managers/cInputManager.hpp"
@@ -6,24 +8,6 @@
 #include "../util/cLog.hpp"
 
 namespace Simpleton {
-    struct CApp::AppImpl {
-        unsigned int engineTicks = 0;
-        // if false - breaks external engine loop in Run()
-        bool isExternalRunning = true;
-        // if false - breaks internal engine loop in Run() to restart engine
-        bool isInternalRunning = true;
-        
-        // Internal vars for window creation to pass from constructor to manager init
-        unsigned int wWidth, wHeight;
-        std::string windowName;
-
-        std::shared_ptr<CLogger> logger;
-        std::shared_ptr<CWindowManager> windowManager;
-        std::shared_ptr<CEventManager> eventManager;
-        std::shared_ptr<CInputManager> inputManager;
-        std::shared_ptr<CRenderManager> renderManager;
-    };
-
     CApp::CApp(unsigned int wWidth, unsigned int wHeight, std::string windowName) {
         mpImplem = std::make_unique<AppImpl>();
         mpImplem->wWidth = wWidth;
