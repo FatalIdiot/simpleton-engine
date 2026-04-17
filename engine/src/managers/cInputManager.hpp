@@ -22,8 +22,6 @@ namespace Simpleton {
             void RemoveBinding(int key) override; 
 
         private:
-            // bool mIsInitialized = false;
-
             std::shared_ptr<CLogger> mpLogger;
             GLFWwindow *mWindow;
 

@@ -1,5 +1,6 @@
 #include "simpleton/cApp.hpp"
 #include "../managers/cWindowManager.hpp"
+#include "../managers/cEventManager.hpp"
 #include "../managers/cInputManager.hpp"
 #include "../managers/cRenderManager.hpp"
 #include "../util/cLog.hpp"
@@ -18,6 +19,7 @@ namespace Simpleton {
 
         std::shared_ptr<CLogger> logger;
         std::shared_ptr<CWindowManager> windowManager;
+        std::shared_ptr<CEventManager> eventManager;
         std::shared_ptr<CInputManager> inputManager;
         std::shared_ptr<CRenderManager> renderManager;
     };
@@ -30,6 +32,9 @@ namespace Simpleton {
 
         mpImplem->windowManager = std::make_shared<CWindowManager>();
         mWindowManager = mpImplem->windowManager;
+
+        mpImplem->eventManager = std::make_shared<CEventManager>();
+        mEventManager = mpImplem->eventManager;
 
         mpImplem->inputManager = std::make_shared<CInputManager>();
         mInputManager = mpImplem->inputManager;
@@ -44,12 +49,16 @@ namespace Simpleton {
         *mpImplem->logger << "Engine init...\n";
 
         mpImplem->windowManager->OnInit(mpImplem->wWidth, mpImplem->wHeight, mpImplem->windowName, mpImplem->logger);
+        mpImplem->eventManager->OnInit(mpImplem->logger);
         mpImplem->inputManager->OnInit(mpImplem->windowManager->GetWindow(), mpImplem->logger);
         mpImplem->renderManager->OnInit(mpImplem->logger, mpImplem->windowManager->GetWindow());
     };
 
     void CApp::OnDestroy() {
         *mpImplem->logger << "Engine destroy...\n";
+        mpImplem->renderManager->OnDestroy();
+        mpImplem->inputManager->OnDestroy();
+        mpImplem->eventManager->OnDestroy();
         mpImplem->windowManager->OnDestroy();
     };
 
