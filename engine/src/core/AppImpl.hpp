@@ -2,10 +2,14 @@
 #pragma once
 
 #include "simpleton/cApp.hpp"
+#include "./GlfwEnginePointer.hpp"
+
 #include "../managers/cWindowManager.hpp"
 #include "../managers/cEventManager.hpp"
 #include "../managers/cInputManager.hpp"
 #include "../managers/cRenderManager.hpp"
+
+#include "./AppEventHandler.hpp"
 
 namespace Simpleton {
     struct CApp::AppImpl {
@@ -24,5 +28,8 @@ namespace Simpleton {
         std::shared_ptr<CEventManager> eventManager;
         std::shared_ptr<CInputManager> inputManager;
         std::shared_ptr<CRenderManager> renderManager;
+
+        GlfwEnginePointer glfwEnginePointer;
+        CAppEventHandler eventHandler;
     };
 }
