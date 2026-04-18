@@ -9,9 +9,10 @@ namespace Simpleton {
         public:
             CEventKeyPress() = delete;
             CEventKeyPress(int keyCode) :
-                mKeyCode(keyCode) {
-                    mType = EVENT_TYPE_KEYPRESS;
-                };
+                mKeyCode(keyCode) 
+            {
+                mType = EVENT_TYPE_KEYPRESS;
+            };
 
             int mKeyCode = 0;
     };

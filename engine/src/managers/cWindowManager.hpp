@@ -8,7 +8,7 @@ typedef struct GLFWwindow GLFWwindow;
 
 namespace Simpleton
 {
-    class CWindowManager : public IWindowManager, IManagerInternal
+    class CWindowManager : public IWindowManager, public IManagerInternal
     {
         public:
             CWindowManager() {};

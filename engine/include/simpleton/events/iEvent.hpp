@@ -5,6 +5,7 @@
 namespace Simpleton {
     class IEvent {
         public:
+            virtual ~IEvent() = default;
             std::string mType;
     };
 }

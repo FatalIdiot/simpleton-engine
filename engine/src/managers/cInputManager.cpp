@@ -1,5 +1,7 @@
 #include "./cInputManager.hpp"
 
+#include "simpleton/events/cEventKeyPress.hpp"
+
 namespace Simpleton {
     bool CInputManager::OnInit(GLFWwindow *window, std::shared_ptr<CLogger> logger) {
         mpLogger = logger;
@@ -21,6 +23,24 @@ namespace Simpleton {
         *mpLogger << "Window Manager destroy...\n";
     };
 
+    void CInputManager::HandleEvent(const IEvent &event) {
+        if(event.mType != EVENT_TYPE_KEYPRESS)
+            return;
+
+        const CEventKeyPress *pressEvent = dynamic_cast<const CEventKeyPress*>(&event);
+        if(!pressEvent) {
+            *mpLogger << "Input Manager key press event cast error.\n";
+            return;
+        }
+
+        for (const auto& [key, func] : mBindings) {
+            if(pressEvent->mKeyCode == key) {
+                *mpLogger << "Input Manager: firing press event for key " << pressEvent->mKeyCode << ".\n";
+                func();
+            }
+        }
+    }
+
     void CInputManager::AddBinding(int key, std::function<void()> func) {
         if(!mIsInitialized) { // if not initialized - store bindings to bind once system is up
             *mpLogger << "Storing binding for key " << key << "\n";
@@ -36,19 +56,5 @@ namespace Simpleton {
         std::map<int, std::function<void()>>::iterator element = mBindings.find(key);
         if(element != mBindings.end())
             mBindings.erase(element);
-    }
-
-    void CInputManager::PollEvents() {
-        glfwPollEvents();
-
-        // if (glfwWindowShouldClose(mWindow)) {
-        //     *mpLogger << "Should close\n";
-        // }
-
-        for (const auto& [key, func] : mBindings) {
-            if(glfwGetKey(mWindow, key) == GLFW_PRESS) {
-                func();
-            }
-        }
     }
 }

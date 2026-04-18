@@ -8,7 +8,7 @@
 #include <GLFW/glfw3.h>
 
 namespace Simpleton {
-    class CRenderManager : public IRenderManager, IManagerInternal {
+    class CRenderManager : public IRenderManager, public IManagerInternal {
         public:
             bool OnInit(std::shared_ptr<CLogger> logger, GLFWwindow *window);
             void OnDestroy();

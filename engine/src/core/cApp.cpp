@@ -40,6 +40,8 @@ namespace Simpleton {
         mpImplem->eventManager->OnInit(mpImplem->windowManager->GetWindow(), mpImplem->logger);
         mpImplem->inputManager->OnInit(mpImplem->windowManager->GetWindow(), mpImplem->logger);
         mpImplem->renderManager->OnInit(mpImplem->logger, mpImplem->windowManager->GetWindow());
+
+        mpImplem->eventManager->RegisterHandler(mpImplem->inputManager.get());
     };
 
     void CApp::OnDestroy() {
@@ -52,7 +54,7 @@ namespace Simpleton {
 
     void CApp::OnUpdate() {
         mpImplem->engineTicks++;
-        mpImplem->inputManager->PollEvents();
+        mpImplem->eventManager->OnUpdate();
         mpImplem->renderManager->Render();
     }
 

@@ -12,10 +12,11 @@
 #include <GLFW/glfw3.h>
 
 namespace Simpleton {
-    class CEventManager : public IEventManager, IManagerInternal {
+    class CEventManager : public IEventManager, public IManagerInternal {
         public:
             bool OnInit(GLFWwindow *window, std::shared_ptr<CLogger> logger);
             void OnDestroy();
+            void OnUpdate();
 
             void CastEvent(const IEvent& event);
             void RegisterHandler(IEventHandler *handler);

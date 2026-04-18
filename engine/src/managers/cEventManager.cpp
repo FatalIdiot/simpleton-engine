@@ -28,8 +28,15 @@ namespace Simpleton {
         *mpLogger << "Event Manager destroy...\n";
     }
 
+    void CEventManager::OnUpdate() {
+        glfwPollEvents();
+    }
+
     void CEventManager::CastEvent(const IEvent& event) {
-        *mpLogger << "Casting event of type " << event.mType << "\n";
+        *mpLogger << "Event Manager: casting event of type " << event.mType << "\n";
+        for(auto &handler : eventHandlers) {
+            handler->HandleEvent(event);
+        }
     }
 
     void CEventManager::RegisterHandler(IEventHandler *handler) {
