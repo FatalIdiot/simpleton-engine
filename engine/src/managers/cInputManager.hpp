@@ -1,16 +1,16 @@
 #pragma once
 
+#include "../util/cLog.hpp"
+#include "../core/cDependencyResolver.hpp"
+
 #include "simpleton/managers/iInputManager.hpp"
 #include "./iManagerInternal.hpp"
-
 #include "simpleton/events/iEventHandler.hpp"
 #include "simpleton/events/iEvent.hpp"
 
-#include "../util/cLog.hpp"
-
 #include <map>
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
+
+typedef struct GLFWwindow GLFWwindow;
 
 namespace Simpleton {
     class CInputManager : public IInputManager, public IManagerInternal, public IEventHandler 
@@ -18,7 +18,7 @@ namespace Simpleton {
         public:
             ~CInputManager() {};
 
-            bool OnInit(GLFWwindow *window, std::shared_ptr<CLogger> logger);
+            bool OnInit(std::shared_ptr<CDependencyResolver> depResolver);
             void OnDestroy();
 
             void AddBinding(int key, std::function<void()> func) override; 

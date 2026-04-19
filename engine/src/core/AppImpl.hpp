@@ -2,7 +2,7 @@
 #pragma once
 
 #include "simpleton/cApp.hpp"
-#include "./GlfwEnginePointer.hpp"
+#include "./cDependencyResolver.hpp"
 
 #include "../managers/cWindowManager.hpp"
 #include "../managers/cEventManager.hpp"
@@ -29,7 +29,7 @@ namespace Simpleton {
         std::shared_ptr<CInputManager> inputManager;
         std::shared_ptr<CRenderManager> renderManager;
 
-        GlfwEnginePointer glfwEnginePointer;
+        std::shared_ptr<CDependencyResolver> depResolver;
         CAppEventHandler eventHandler;
     };
 }

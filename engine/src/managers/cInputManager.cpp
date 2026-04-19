@@ -1,12 +1,13 @@
 #include "./cInputManager.hpp"
+#include "./cWindowManager.hpp"
 
 #include "simpleton/events/cEventKeyPress.hpp"
 
 namespace Simpleton {
-    bool CInputManager::OnInit(GLFWwindow *window, std::shared_ptr<CLogger> logger) {
-        mpLogger = logger;
+    bool CInputManager::OnInit(std::shared_ptr<CDependencyResolver> depResolver) {
+        mpLogger = depResolver->GetLogger();
         *mpLogger << "Input Manager init...\n";
-        mWindow = window;
+        mWindow = depResolver->GetWindowManager()->GetWindow();
 
         *mpLogger << "Inputs initialized.\n";
         mIsInitialized = true;

@@ -5,9 +5,9 @@
 
 namespace Simpleton {
     bool CWindowManager::OnInit(unsigned int wWidth, unsigned int wHeight, std::string windowName,
-            std::shared_ptr<CLogger> logger) 
+            std::shared_ptr<CDependencyResolver> depResolver) 
     {
-        mpLogger = logger;
+        mpLogger = depResolver->GetLogger();
         *mpLogger << "Window Manager init...\n";
 
         glfwInit();

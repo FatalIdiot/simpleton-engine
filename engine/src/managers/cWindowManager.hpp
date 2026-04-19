@@ -1,8 +1,10 @@
 #pragma once
 
-#include "simpleton/managers/iWindowManager.hpp"
-#include "./iManagerInternal.hpp"
 #include "../util/cLog.hpp"
+#include "../core/cDependencyResolver.hpp"
+
+#include "./iManagerInternal.hpp"
+#include "simpleton/managers/iWindowManager.hpp"
 
 typedef struct GLFWwindow GLFWwindow;
 
@@ -14,7 +16,7 @@ namespace Simpleton
             CWindowManager() {};
             ~CWindowManager() {};
 
-            bool OnInit(unsigned int wWidth, unsigned int wHeight, std::string windowName, std::shared_ptr<CLogger> logger);
+            bool OnInit(unsigned int wWidth, unsigned int wHeight, std::string windowName, std::shared_ptr<CDependencyResolver> depResolver);
             void OnDestroy();
 
             GLFWwindow* GetWindow();

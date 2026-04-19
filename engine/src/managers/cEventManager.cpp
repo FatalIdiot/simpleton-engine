@@ -1,21 +1,21 @@
 #include "./cEventManager.hpp"
-#include "../core/GlfwEnginePointer.hpp"
+#include "./cWindowManager.hpp"
 
 #include "simpleton/events/cEventKeyPress.hpp"
 
 namespace Simpleton {
     void GLFWKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
     {
-        GlfwEnginePointer *engineIntern = reinterpret_cast<GlfwEnginePointer *>(glfwGetWindowUserPointer(window));
+        CDependencyResolver *dependencyResolver = reinterpret_cast<CDependencyResolver *>(glfwGetWindowUserPointer(window));
         if(action == GLFW_PRESS) {
             CEventKeyPress keypressEvent{key};
-            engineIntern->mEventManager->CastEvent(keypressEvent);
+            dependencyResolver->GetEventManager()->CastEvent(keypressEvent);
         }
     }
 
-    bool CEventManager::OnInit(GLFWwindow *window, std::shared_ptr<CLogger> logger) {
-        mpLogger = logger;
-        mWindow = window;
+    bool CEventManager::OnInit(std::shared_ptr<CDependencyResolver> depResolver) {
+        mpLogger = depResolver->GetLogger();
+        mWindow = depResolver->GetWindowManager()->GetWindow();
         *mpLogger << "Event Manager init...\n";
 
         glfwSetKeyCallback(mWindow, GLFWKeyCallback);
@@ -40,7 +40,7 @@ namespace Simpleton {
     }
 
     void CEventManager::RegisterHandler(IEventHandler *handler) {
-        *mpLogger << "Registering event handler.";
+        *mpLogger << "Event Manager: registering event handler.\n";
         eventHandlers.push_back(handler);
     }
 }

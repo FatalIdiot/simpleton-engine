@@ -140,6 +140,7 @@
 #include "simpleton/managers/iEventManager.hpp"
 #include "simpleton/managers/iInputManager.hpp"
 #include "simpleton/managers/iRenderManager.hpp"
+
 #include <memory>
 #include <string>
 #include <map>

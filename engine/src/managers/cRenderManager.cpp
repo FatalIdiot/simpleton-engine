@@ -1,9 +1,10 @@
 #include "./cRenderManager.hpp"
+#include "./cWindowManager.hpp"
 
 namespace Simpleton {
-    bool CRenderManager::OnInit(std::shared_ptr<CLogger> logger, GLFWwindow *window) {
-        mpLogger = logger;
-        mWindow = window;
+    bool CRenderManager::OnInit(std::shared_ptr<CDependencyResolver> depResolver) {
+        mpLogger = depResolver->GetLogger();
+        mWindow = depResolver->GetWindowManager()->GetWindow();
         *mpLogger << "Render Manager init...\n";
 
         mIsInitialized = true;

@@ -1,10 +1,12 @@
 #pragma once
 
+#include "../util/cLog.hpp"
+#include "../core/cDependencyResolver.hpp"
+
 #include "simpleton/managers/iEventManager.hpp"
 #include "simpleton/events/iEventHandler.hpp"
 #include "simpleton/events/iEvent.hpp"
 #include "./iManagerInternal.hpp"
-#include "../util/cLog.hpp"
 
 #include <vector>
 
@@ -14,7 +16,7 @@
 namespace Simpleton {
     class CEventManager : public IEventManager, public IManagerInternal {
         public:
-            bool OnInit(GLFWwindow *window, std::shared_ptr<CLogger> logger);
+            bool OnInit(std::shared_ptr<CDependencyResolver> depResolver);
             void OnDestroy();
             void OnUpdate();
 
