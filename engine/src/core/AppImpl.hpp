@@ -3,6 +3,7 @@
 
 #include "simpleton/cApp.hpp"
 #include "./cDependencyResolver.hpp"
+#include "simpleton/util/cTimer.hpp"
 
 #include "../managers/cWindowManager.hpp"
 #include "../managers/cEventManager.hpp"
@@ -22,6 +23,7 @@ namespace Simpleton {
         // Internal vars for window creation to pass from constructor to manager init
         unsigned int wWidth, wHeight;
         std::string windowName;
+        cTimer gameLoopTimer;
 
         std::shared_ptr<CLogger> logger;
         std::shared_ptr<CWindowManager> windowManager;

@@ -44,6 +44,8 @@ namespace Simpleton {
         mpImplem->renderManager->OnInit(mpImplem->depResolver);
 
         mpImplem->eventManager->RegisterHandler(mpImplem->inputManager.get());
+
+        mpImplem->gameLoopTimer.Start();
     };
 
     void CApp::OnDestroy() {
@@ -55,6 +57,9 @@ namespace Simpleton {
     };
 
     void CApp::OnUpdate() {
+        float deltaT = mpImplem->gameLoopTimer.Elapsed();
+        *mpImplem->logger << "Time passed: " << deltaT << "\n";
+
         mpImplem->engineTicks++;
         mpImplem->eventManager->OnUpdate();
         mpImplem->renderManager->Render();
