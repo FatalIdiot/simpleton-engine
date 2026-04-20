@@ -7,6 +7,7 @@
 #include "simpleton/events/cEventMouseRelease.hpp"
 #include "simpleton/events/cEventWindowClose.hpp"
 #include "simpleton/events/cEventMouseMove.hpp"
+#include "simpleton/events/cEventMouseScroll.hpp"
 
 namespace Simpleton {
     void GLFWKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -54,6 +55,13 @@ namespace Simpleton {
         dependencyResolver->GetEventManager()->CastEvent(mouseMove);
     }
 
+    void GLFWScrollCallback(GLFWwindow* window, double xoffset, double yoffset)
+    {
+        CDependencyResolver *dependencyResolver = reinterpret_cast<CDependencyResolver *>(glfwGetWindowUserPointer(window));
+        CEventMouseScroll mouseScroll{xoffset, yoffset};
+        dependencyResolver->GetEventManager()->CastEvent(mouseScroll);
+    }
+
     void GLFWWindowCloseCallback(GLFWwindow* window)
     {
         CDependencyResolver *dependencyResolver = reinterpret_cast<CDependencyResolver *>(glfwGetWindowUserPointer(window));
@@ -70,6 +78,7 @@ namespace Simpleton {
         glfwSetKeyCallback(mWindow, GLFWKeyCallback);
         glfwSetMouseButtonCallback(mWindow, GLFWMouseButtonCallback);
         glfwSetCursorPosCallback(mWindow, GLFWCursorPositionCallback);
+        glfwSetScrollCallback(mWindow, GLFWScrollCallback);
         glfwSetWindowCloseCallback(mWindow, GLFWWindowCloseCallback);
         
 
