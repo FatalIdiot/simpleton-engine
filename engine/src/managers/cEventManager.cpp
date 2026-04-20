@@ -2,15 +2,36 @@
 #include "./cWindowManager.hpp"
 
 #include "simpleton/events/cEventKeyPress.hpp"
+#include "simpleton/events/cEventKeyRelease.hpp"
+#include "simpleton/events/cEventWindowClose.hpp"
 
 namespace Simpleton {
     void GLFWKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
     {
         CDependencyResolver *dependencyResolver = reinterpret_cast<CDependencyResolver *>(glfwGetWindowUserPointer(window));
-        if(action == GLFW_PRESS) {
-            CEventKeyPress keypressEvent{key};
-            dependencyResolver->GetEventManager()->CastEvent(keypressEvent);
+
+        switch(action) {
+            case GLFW_PRESS: {
+                    CEventKeyPress keyPressEvent{key};
+                    dependencyResolver->GetEventManager()->CastEvent(keyPressEvent);
+                    break;
+                }
+            case GLFW_RELEASE: {
+                    CEventKeyRelease keyReleaseEvent{key};
+                    dependencyResolver->GetEventManager()->CastEvent(keyReleaseEvent);
+                    break;
+                }
+            default:
+                break;
         }
+    }
+
+    void GLFWWindowCloseCallback(GLFWwindow* window)
+    {
+        CDependencyResolver *dependencyResolver = reinterpret_cast<CDependencyResolver *>(glfwGetWindowUserPointer(window));
+        CEventWindowClose windowCloseEvent{};
+        dependencyResolver->GetEventManager()->CastEvent(windowCloseEvent);
+        glfwSetWindowShouldClose(window, GL_FALSE);
     }
 
     bool CEventManager::OnInit(std::shared_ptr<CDependencyResolver> depResolver) {
@@ -19,6 +40,7 @@ namespace Simpleton {
         *mpLogger << "Event Manager init...\n";
 
         glfwSetKeyCallback(mWindow, GLFWKeyCallback);
+        glfwSetWindowCloseCallback(mWindow, GLFWWindowCloseCallback);
 
         mIsInitialized = true;
         return true;

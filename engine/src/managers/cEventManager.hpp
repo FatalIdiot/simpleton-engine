@@ -21,7 +21,7 @@ namespace Simpleton {
             void OnUpdate();
 
             void CastEvent(const IEvent& event);
-            void RegisterHandler(IEventHandler *handler);
+            void RegisterHandler(IEventHandler *handler) override;
 
         private:
             std::shared_ptr<CLogger> mpLogger;

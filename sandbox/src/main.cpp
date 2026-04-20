@@ -1,12 +1,26 @@
-#include <simpleton/cApp.hpp>
 #include <iostream>
 
-class SandboxApp : public Simpleton::CApp {
+#include <simpleton/cApp.hpp>
+
+#include <simpleton/events/iEventHandler.hpp>
+#include <simpleton/events/cEventWindowClose.hpp>
+
+class SandboxApp : public Simpleton::CApp, public Simpleton::IEventHandler {
     public:
         SandboxApp(unsigned int wWidth, unsigned int wHeight, std::string windowName)
-            : Simpleton::CApp(wWidth, wHeight, windowName) {}
+            : Simpleton::CApp(wWidth, wHeight, windowName) {
+                // Register this event handler
+                mEventManager->RegisterHandler(this);
+            }
 
-    protected:
+        void HandleEvent(const Simpleton::IEvent &event) {
+            std::cout << "Handing game event of type " << event.mType << std::endl;
+
+            if(event.mType == EVENT_TYPE_WINDOWCLOSE) {
+                Shutdown();
+            }
+        }
+
         void OnInit() override {
             std::cout << "Game Init!\n";
         }
