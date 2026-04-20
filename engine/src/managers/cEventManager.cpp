@@ -64,7 +64,6 @@ namespace Simpleton {
     }
 
     void CEventManager::CastEvent(const IEvent& event) {
-        *mpLogger << "Event Manager: casting event of type " << event.mType << "\n";
         for(auto &handler : eventHandlers) {
             handler->HandleEvent(event);
         }

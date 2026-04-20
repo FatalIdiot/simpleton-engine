@@ -1,5 +1,6 @@
 #include <iostream>
 
+#include <simpleton/inputDefines.hpp>
 #include <simpleton/cApp.hpp>
 
 #include <simpleton/events/iEventHandler.hpp>
