@@ -3,6 +3,8 @@
 
 #include "simpleton/events/cEventKeyPress.hpp"
 #include "simpleton/events/cEventKeyRelease.hpp"
+#include "simpleton/events/cEventMousePress.hpp"
+#include "simpleton/events/cEventMouseRelease.hpp"
 #include "simpleton/events/cEventWindowClose.hpp"
 #include "simpleton/events/cEventMouseMove.hpp"
 
@@ -10,16 +12,34 @@ namespace Simpleton {
     void GLFWKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
     {
         CDependencyResolver *dependencyResolver = reinterpret_cast<CDependencyResolver *>(glfwGetWindowUserPointer(window));
-
         switch(action) {
             case GLFW_PRESS: {
-                    CEventKeyPress keyPressEvent{key};
-                    dependencyResolver->GetEventManager()->CastEvent(keyPressEvent);
+                    CEventMousePress mousePressEvent{key};
+                    dependencyResolver->GetEventManager()->CastEvent(mousePressEvent);
                     break;
                 }
             case GLFW_RELEASE: {
-                    CEventKeyRelease keyReleaseEvent{key};
-                    dependencyResolver->GetEventManager()->CastEvent(keyReleaseEvent);
+                    CEventMouseRelease mouseReleaseEvent{key};
+                    dependencyResolver->GetEventManager()->CastEvent(mouseReleaseEvent);
+                    break;
+                }
+            default:
+                break;
+        }
+    }
+
+    void GLFWMouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
+    {
+        CDependencyResolver *dependencyResolver = reinterpret_cast<CDependencyResolver *>(glfwGetWindowUserPointer(window));
+        switch(action) {
+            case GLFW_PRESS: {
+                    CEventKeyPress buttonPressEvent{button};
+                    dependencyResolver->GetEventManager()->CastEvent(buttonPressEvent);
+                    break;
+                }
+            case GLFW_RELEASE: {
+                    CEventKeyRelease buttonReleaseEvent{button};
+                    dependencyResolver->GetEventManager()->CastEvent(buttonReleaseEvent);
                     break;
                 }
             default:
@@ -48,8 +68,10 @@ namespace Simpleton {
         *mpLogger << "Event Manager init...\n";
 
         glfwSetKeyCallback(mWindow, GLFWKeyCallback);
+        glfwSetMouseButtonCallback(mWindow, GLFWMouseButtonCallback);
         glfwSetCursorPosCallback(mWindow, GLFWCursorPositionCallback);
         glfwSetWindowCloseCallback(mWindow, GLFWWindowCloseCallback);
+        
 
         mIsInitialized = true;
         return true;

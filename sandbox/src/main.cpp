@@ -15,8 +15,6 @@ class SandboxApp : public Simpleton::CApp, public Simpleton::IEventHandler {
             }
 
         void HandleEvent(const Simpleton::IEvent &event) {
-            std::cout << "Handing game event of type " << event.mType << std::endl;
-
             if(event.mType == EVENT_TYPE_WINDOWCLOSE) {
                 Shutdown();
             }
