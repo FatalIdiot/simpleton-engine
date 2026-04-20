@@ -40,6 +40,9 @@ int main() {
     SandboxApp.mInputManager->AddBinding(KEY_ESCAPE, [&SandboxApp]() -> void {
         SandboxApp.Shutdown();
     });
+    SandboxApp.mInputManager->AddBinding(KEY_GRAVE_ACCENT, [&SandboxApp]() -> void {
+        SandboxApp.Restart();
+    });
     SandboxApp.Run();
 
     std::cout << "..:: Simpleton Sandbox End ::..\n\n";

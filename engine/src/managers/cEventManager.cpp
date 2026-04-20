@@ -15,12 +15,12 @@ namespace Simpleton {
         CDependencyResolver *dependencyResolver = reinterpret_cast<CDependencyResolver *>(glfwGetWindowUserPointer(window));
         switch(action) {
             case GLFW_PRESS: {
-                    CEventMousePress mousePressEvent{key};
+                    CEventKeyPress mousePressEvent{key};
                     dependencyResolver->GetEventManager()->CastEvent(mousePressEvent);
                     break;
                 }
             case GLFW_RELEASE: {
-                    CEventMouseRelease mouseReleaseEvent{key};
+                    CEventKeyRelease mouseReleaseEvent{key};
                     dependencyResolver->GetEventManager()->CastEvent(mouseReleaseEvent);
                     break;
                 }
@@ -34,12 +34,12 @@ namespace Simpleton {
         CDependencyResolver *dependencyResolver = reinterpret_cast<CDependencyResolver *>(glfwGetWindowUserPointer(window));
         switch(action) {
             case GLFW_PRESS: {
-                    CEventKeyPress buttonPressEvent{button};
+                    CEventMousePress buttonPressEvent{button};
                     dependencyResolver->GetEventManager()->CastEvent(buttonPressEvent);
                     break;
                 }
             case GLFW_RELEASE: {
-                    CEventKeyRelease buttonReleaseEvent{button};
+                    CEventMouseRelease buttonReleaseEvent{button};
                     dependencyResolver->GetEventManager()->CastEvent(buttonReleaseEvent);
                     break;
                 }

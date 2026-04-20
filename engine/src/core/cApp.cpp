@@ -33,6 +33,7 @@ namespace Simpleton {
     void CApp::OnInit() {
         mpImplem->logger = std::make_shared<CLogger>();
         *mpImplem->logger << "Engine init...\n";
+        mpImplem->isInternalRunning = true;
 
         mpImplem->windowManager->OnInit(mpImplem->wWidth, mpImplem->wHeight, mpImplem->windowName, mpImplem->depResolver);
         
@@ -80,9 +81,6 @@ namespace Simpleton {
                 CApp::OnUpdate();
                 OnUpdate();
             }
-
-            // Flag engine exit here for now
-            Shutdown();
             
             OnDestroy();
             CApp::OnDestroy();
