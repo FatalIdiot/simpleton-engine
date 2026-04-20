@@ -8,5 +8,8 @@ namespace Simpleton {
         public:
             virtual void AddBinding(int key, std::function<void()> func) = 0; 
             virtual void RemoveBinding(int key) = 0; 
+
+            virtual double GetMouseX() = 0;
+            virtual double GetMouseY() = 0;
     };
 }

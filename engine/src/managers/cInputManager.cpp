@@ -2,6 +2,7 @@
 #include "./cWindowManager.hpp"
 
 #include "simpleton/events/cEventKeyPress.hpp"
+#include "simpleton/events/cEventMouseMove.hpp"
 
 namespace Simpleton {
     bool CInputManager::OnInit(std::shared_ptr<CDependencyResolver> depResolver) {
@@ -25,20 +26,18 @@ namespace Simpleton {
     };
 
     void CInputManager::HandleEvent(const IEvent &event) {
-        if(event.mType != EVENT_TYPE_KEYPRESS)
-            return;
-
-        const CEventKeyPress *pressEvent = dynamic_cast<const CEventKeyPress*>(&event);
-        if(!pressEvent) {
-            *mpLogger << "Input Manager key press event cast error.\n";
-            return;
-        }
-
-        for (const auto& [key, func] : mBindings) {
-            if(pressEvent->mKeyCode == key) {
-                *mpLogger << "Input Manager: firing press event for key " << pressEvent->mKeyCode << ".\n";
-                func();
+        if(event.mType == EVENT_TYPE_KEYPRESS) {
+            const CEventKeyPress *pressEvent = dynamic_cast<const CEventKeyPress*>(&event);
+            for (const auto& [key, func] : mBindings) {
+                if(pressEvent->mKeyCode == key) {
+                    *mpLogger << "Input Manager: firing press event for key " << pressEvent->mKeyCode << ".\n";
+                    func();
+                }
             }
+        } else if(event.mType == EVENT_TYPE_MOUSEMOVE) {
+            const CEventMouseMove *mouseMoveEvent = dynamic_cast<const CEventMouseMove*>(&event);
+            mouseX = mouseMoveEvent->x;
+            mouseY = mouseMoveEvent->y;
         }
     }
 

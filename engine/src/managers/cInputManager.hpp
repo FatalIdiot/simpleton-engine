@@ -26,7 +26,12 @@ namespace Simpleton {
 
             void HandleEvent(const IEvent &event) override;
 
+            virtual double GetMouseX() override { return mouseX; };
+            virtual double GetMouseY() override { return mouseY; };
+
         private:
+            double mouseX = 0, mouseY = 0;
+
             std::shared_ptr<CLogger> mpLogger;
             GLFWwindow *mWindow;
 
