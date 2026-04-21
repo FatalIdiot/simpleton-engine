@@ -46,6 +46,7 @@ namespace Simpleton {
         mpImplem->eventManager->RegisterHandler(mpImplem->inputManager.get());
 
         mpImplem->gameLoopTimer.Start();
+        mpImplem->fpsTimer.Start();
     };
 
     void CApp::OnDestroy() {
@@ -57,11 +58,18 @@ namespace Simpleton {
     };
 
     void CApp::OnUpdate(float dt) {
-        mpImplem->engineTicks++;
         mpImplem->eventManager->OnUpdate();
         mpImplem->renderManager->Render();
 
         mpImplem->deltaT = mpImplem->gameLoopTimer.Elapsed();
+
+        mpImplem->fpsCount++;
+        mpImplem->engineTicks++;
+        if(mpImplem->fpsTimer.GetPassedTime() >= 1.0f) {
+            mpImplem->framesPerSecond = mpImplem->fpsCount;
+            mpImplem->fpsCount = 0;
+            mpImplem->fpsTimer.Restart();
+        }
     }
 
     void CApp::Shutdown() {

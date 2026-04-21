@@ -16,6 +16,7 @@ namespace Simpleton {
             void Start();
             void Pause();
             void Clear(); // Stop timer
+            void Restart(); // Start timer over
 
             float GetPassedTime(); // get time since Start
             float Elapsed(); // get time from last Elapsed call or from timer start

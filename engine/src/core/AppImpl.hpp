@@ -21,8 +21,12 @@ namespace Simpleton {
         // Internal vars for window creation to pass from constructor to manager init
         unsigned int wWidth, wHeight;
         std::string windowName;
+
         cTimer gameLoopTimer;
-        float deltaT;
+        float deltaT = 0.0f;
+        cTimer fpsTimer;
+        unsigned int fpsCount = 0;
+        unsigned int framesPerSecond = 0;
 
         std::shared_ptr<CLogger> logger;
         std::shared_ptr<CWindowManager> windowManager;

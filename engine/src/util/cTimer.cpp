@@ -34,6 +34,12 @@ namespace Simpleton {
         mState = TimerState::Stopped;
     }
 
+    void cTimer::Restart() {
+        mPassedTime = seconds::zero();
+        mStartTime = steady_clock::now();
+        mState = TimerState::Running;
+    }
+
     float cTimer::Elapsed() {
         if(mState != TimerState::Running)
             return 0.0f;
