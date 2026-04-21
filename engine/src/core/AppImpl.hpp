@@ -10,8 +10,6 @@
 #include "../managers/cInputManager.hpp"
 #include "../managers/cRenderManager.hpp"
 
-#include "./AppEventHandler.hpp"
-
 namespace Simpleton {
     struct CApp::AppImpl {
         unsigned int engineTicks = 0;
@@ -33,6 +31,5 @@ namespace Simpleton {
         std::shared_ptr<CRenderManager> renderManager;
 
         std::shared_ptr<CDependencyResolver> depResolver;
-        CAppEventHandler eventHandler;
     };
 }

@@ -8,4 +8,10 @@ namespace Simpleton {
             virtual ~IEvent() = default;
             std::string mType;
     };
+
+    template<typename T>
+    const T* EventCast(const IEvent& event)
+    {
+        return dynamic_cast<const T*>(&event);
+    }
 }
