@@ -22,6 +22,8 @@ namespace Simpleton {
             // Set flag to break engine internal loop in Run()
             void Restart();
 
+            unsigned int GetFPS();
+
             std::shared_ptr<IWindowManager> mWindowManager;
             std::shared_ptr<IEventManager> mEventManager;
             std::shared_ptr<IInputManager> mInputManager;

@@ -25,7 +25,7 @@ class SandboxApp : public Simpleton::CApp, public Simpleton::IEventHandler {
         }
 
         void OnUpdate(float dt) override {
-            // std::cout << "Game Update! " << dt << std::endl;
+            // std::cout << "Game Update! " << GetFPS() << std::endl;
         }
 
         void OnDestroy() override {

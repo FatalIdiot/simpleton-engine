@@ -83,6 +83,10 @@ namespace Simpleton {
         mpImplem->isInternalRunning = false;
     }
 
+    unsigned int CApp::GetFPS() {
+        return mpImplem->framesPerSecond;
+    }
+
     void CApp::Run() {
         // External loop - used to restart engine without killing the process
         while(mpImplem->isExternalRunning) {
