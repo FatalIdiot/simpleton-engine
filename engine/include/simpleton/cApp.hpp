@@ -29,7 +29,7 @@ namespace Simpleton {
             
         protected:
             virtual void OnInit();
-            virtual void OnUpdate();
+            virtual void OnUpdate(float dt);
             virtual void OnDestroy();
 
         private:

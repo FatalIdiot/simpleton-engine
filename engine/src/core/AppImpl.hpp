@@ -24,6 +24,7 @@ namespace Simpleton {
         unsigned int wWidth, wHeight;
         std::string windowName;
         cTimer gameLoopTimer;
+        float deltaT;
 
         std::shared_ptr<CLogger> logger;
         std::shared_ptr<CWindowManager> windowManager;
