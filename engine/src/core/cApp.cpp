@@ -8,6 +8,8 @@
 #include "../managers/cInputManager.hpp"
 #include "../managers/cRenderManager.hpp"
 
+#include "simpleton/events/cEventSecondPassed.hpp"
+
 namespace Simpleton {
     CApp::CApp(unsigned int wWidth, unsigned int wHeight, std::string windowName) {
         mpImplem = std::make_unique<AppImpl>();
@@ -69,6 +71,8 @@ namespace Simpleton {
             mpImplem->framesPerSecond = mpImplem->fpsCount;
             mpImplem->fpsCount = 0;
             mpImplem->fpsTimer.Restart();
+
+            mpImplem->eventManager->CastEvent(CEventSecondPassed{});
         }
     }
 
