@@ -6,7 +6,7 @@
 #include "../managers/cWindowManager.hpp"
 #include "../managers/cEventManager.hpp"
 #include "../managers/cInputManager.hpp"
-#include "../managers/cRenderManager.hpp"
+#include "../managers/render/cOpenGLRenderManager.hpp"
 
 #include "simpleton/events/cEventSecondPassed.hpp"
 
@@ -23,7 +23,7 @@ namespace Simpleton {
         mEventManager = mpImplem->eventManager;
         mpImplem->inputManager = std::make_shared<CInputManager>();
         mInputManager = mpImplem->inputManager;
-        mpImplem->renderManager = std::make_shared<CRenderManager>();
+        mpImplem->renderManager = std::make_shared<COpenGLRenderManager>();
         mRenderManager = mpImplem->renderManager;
 
         mpImplem->depResolver = std::make_shared<CDependencyResolver>(
