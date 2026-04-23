@@ -22,4 +22,15 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(glfw)
 
-target_link_libraries(simpleton_engine PRIVATE glfw)
+
+include(FetchContent)
+
+FetchContent_Declare(
+    glm
+    GIT_REPOSITORY https://github.com/g-truc/glm.git
+    GIT_TAG master  
+)
+
+FetchContent_MakeAvailable(glm)
+
+target_link_libraries(simpleton_engine PRIVATE glfw glm)
