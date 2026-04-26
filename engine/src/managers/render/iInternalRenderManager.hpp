@@ -19,6 +19,5 @@ namespace Simpleton {
         protected:
             glm::vec3 mClearColor{0.0f, 0.0f, 0.0f};
             std::shared_ptr<CLogger> mpLogger;
-            GLFWwindow *mWindow;
     };
 }

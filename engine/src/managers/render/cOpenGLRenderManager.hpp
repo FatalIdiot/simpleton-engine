@@ -14,5 +14,8 @@ namespace Simpleton {
             void Render() override;
 
             void SetClearColor(float r, float g, float b) override;
+
+        private:
+            GLFWwindow *mWindow;
     };
 }
