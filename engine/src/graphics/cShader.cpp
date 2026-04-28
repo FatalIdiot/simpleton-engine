@@ -1,125 +1,140 @@
-// #include "./cShader.hpp"
+#include "./cShader.hpp"
 
-// #include <iostream>
-// #include <fstream>
-// #include <sstream>
+#include <iostream>
+#include <fstream>
+#include <sstream>
 
-// #include "glad/glad.h"
+#include "glad/glad.h"
 
-// namespace Simpleton {
-//     CShader::CShader() {
-//         mVertexShader = glCreateShader(GL_VERTEX_SHADER);
-//         mFragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-//         mShaderProgId = glCreateProgram();
+namespace Simpleton {
+    CShader::CShader() {
+    }
 
-//         mIsValid = false;
-//     }
+    CShader::~CShader() {
+        Terminate();
+    }
 
-//     CShader::~CShader() {
-//         Terminate();
-//     }
+    void CShader::Init() {
+        if(mIsInited)
+            return;
 
-//     bool CShader::CheckShaderValid(ShaderType type) {
-//         unsigned int shader = (type == ShaderType::VertexShader ? mVertexShader : mFragmentShader);
+        mVertexShader = glCreateShader(GL_VERTEX_SHADER);
+        mFragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+        mShaderProgId = glCreateProgram();
 
-//         int success;
-//         glGetShaderiv(shader, GL_SHADER_SOURCE_LENGTH, &success);
-//         if(!success) {
-//             return false;
-//         }
-//         glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-//         if(!success) {
-//             return false;
-//         }
+        mIsInited = true;
+        mIsValid = false;
+    }
 
-//         return true;
-//     }
+    bool CShader::CheckShaderValid(ShaderType type) {
+        unsigned int shader = (type == ShaderType::VertexShader ? mVertexShader : mFragmentShader);
 
-//     bool CShader::CheckProgramValid() {
-//         return mIsValid;
-//     }
+        int success;
+        glGetShaderiv(shader, GL_SHADER_SOURCE_LENGTH, &success);
+        if(!success) {
+            return false;
+        }
+        glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+        if(!success) {
+            return false;
+        }
 
-//     bool CShader::AddShaderSource(ShaderType type, const char* code) {
-//         int success;
-//         unsigned int shader = (type == ShaderType::VertexShader ? mVertexShader : mFragmentShader);
+        return true;
+    }
 
-//         glShaderSource(shader, 1, &code, 0);
-//         glCompileShader(shader);
-//         glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-//         if(!success)
-//         {
-//             glGetShaderInfoLog(shader, 512, 0, mErrorLog);
-//             return false;
-//         }
+    bool CShader::CheckProgramValid() {
+        return mIsValid && mIsInited;
+    }
 
-//         return true;
-//     }
+    bool CShader::AddShaderSource(ShaderType type, const char* code) {
+        Init();
 
-//     bool CShader::AddShaderFile(ShaderType type, fs::path filePath) {
-//         std::ifstream file(filePath);
-//         if (!file.is_open()) {
-//             return false;
-//         }
+        int success;
+        unsigned int shader = (type == ShaderType::VertexShader ? mVertexShader : mFragmentShader);
 
-//         std::stringstream buffer;
-//         buffer << file.rdbuf();
+        glShaderSource(shader, 1, &code, 0);
+        glCompileShader(shader);
+        glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+        if(!success)
+        {
+            glGetShaderInfoLog(shader, 512, 0, mErrorLog);
+            return false;
+        }
 
-//         file.close();
+        return true;
+    }
 
-//         return AddShaderSource(type, buffer.str().c_str());
-//     }
+    bool CShader::AddShaderFile(ShaderType type, fs::path filePath) {
+        Init();
 
-//     bool CShader::Compile() {
-//         int success;
+        std::ifstream file(filePath);
+        if (!file.is_open()) {
+            return false;
+        }
 
-//         // Check both shaders for validity 
-//         if(!CheckShaderValid(ShaderType::VertexShader)) {
-//             return false;
-//         }
-//         if(!CheckShaderValid(ShaderType::FragmentShader)) {
-//             return false;
-//         }
+        std::stringstream buffer;
+        buffer << file.rdbuf();
 
-//         glAttachShader(mShaderProgId, mVertexShader);
-//         glAttachShader(mShaderProgId, mFragmentShader);
-//         glLinkProgram(mShaderProgId);
-//         glGetProgramiv(mShaderProgId, GL_LINK_STATUS, &success);
-//         if(!success) {
-//             mIsValid = false;
-//             glGetProgramInfoLog(mShaderProgId, 512, 0, mErrorLog);
-//             return false;
-//         }
+        file.close();
 
-//         mIsValid = true;
-//         return true;
-//     }
+        return AddShaderSource(type, buffer.str().c_str());
+    }
 
-//     void CShader::SetUniform(const char* name, float x, float y, float z, float w) {
-//         int uniformLocation = glGetUniformLocation(mShaderProgId, name);
-//         glUniform4f(uniformLocation, x, y, z, w);
-//     }
+    bool CShader::Compile() {
+        int success;
 
-//     void CShader::SetUniform(const char* name, int i) {
-//         int uniformLocation = glGetUniformLocation(mShaderProgId, name);
-//         glUniform1i(uniformLocation, i);
-//     }
+        // Check both shaders for validity 
+        if(!CheckShaderValid(ShaderType::VertexShader)) {
+            return false;
+        }
+        if(!CheckShaderValid(ShaderType::FragmentShader)) {
+            return false;
+        }
 
-//     void CShader::Bind() const {
-//         glUseProgram(mShaderProgId);
-//     }
+        glAttachShader(mShaderProgId, mVertexShader);
+        glAttachShader(mShaderProgId, mFragmentShader);
+        glLinkProgram(mShaderProgId);
+        glGetProgramiv(mShaderProgId, GL_LINK_STATUS, &success);
+        if(!success) {
+            mIsValid = false;
+            glGetProgramInfoLog(mShaderProgId, 512, 0, mErrorLog);
+            return false;
+        }
 
-//     void CShader::Unbind() const {
-//         glUseProgram(0);
-//     }
+        mIsValid = true;
+        return true;
+    }
 
-//     void CShader::Terminate() {
-//         glDeleteShader(mVertexShader);
-//         glDeleteShader(mFragmentShader);
+    void CShader::SetUniform(const char* name, float x, float y, float z, float w) {
+        int uniformLocation = glGetUniformLocation(mShaderProgId, name);
+        glUniform4f(uniformLocation, x, y, z, w);
+    }
 
-//         int currentShaderProg;
-//         glGetIntegerv(GL_CURRENT_PROGRAM, &currentShaderProg);
-//         if(currentShaderProg == mShaderProgId)
-//             Unbind();
-//         glDeleteProgram(mShaderProgId);
-//     }
-// }
+    void CShader::SetUniform(const char* name, int i) {
+        int uniformLocation = glGetUniformLocation(mShaderProgId, name);
+        glUniform1i(uniformLocation, i);
+    }
+
+    void CShader::Bind() const {
+        glUseProgram(mShaderProgId);
+    }
+
+    void CShader::Unbind() const {
+        glUseProgram(0);
+    }
+
+    void CShader::Terminate() {
+        glDeleteShader(mVertexShader);
+        glDeleteShader(mFragmentShader);
+
+        int currentShaderProg;
+        glGetIntegerv(GL_CURRENT_PROGRAM, &currentShaderProg);
+        if(currentShaderProg == mShaderProgId)
+            Unbind();
+        glDeleteProgram(mShaderProgId);
+    }
+
+    std::string CShader::GetErrorLog() {
+        return std::string(mErrorLog);
+    }
+}

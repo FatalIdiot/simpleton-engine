@@ -1,6 +1,7 @@
 #pragma once
 
 #include "./iInternalRenderManager.hpp"
+#include "../../graphics/cShader.hpp"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -15,7 +16,10 @@ namespace Simpleton {
 
             void SetClearColor(float r, float g, float b) override;
 
+            void FillTriangle(unsigned int p1, unsigned int p2, unsigned int p3) override;
+
         private:
             GLFWwindow *mWindow;
+            CShader mPrimitiveShader;
     };
 }

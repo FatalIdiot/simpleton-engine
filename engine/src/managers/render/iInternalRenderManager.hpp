@@ -17,7 +17,6 @@ namespace Simpleton {
             virtual void Render() = 0;
 
         protected:
-            glm::vec3 mClearColor{0.0f, 0.0f, 0.0f};
             std::shared_ptr<CLogger> mpLogger;
     };
 }
