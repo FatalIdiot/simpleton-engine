@@ -61,19 +61,6 @@ namespace Simpleton {
 
     void CApp::OnUpdate(float dt) {
         mpImplem->eventManager->OnUpdate();
-        mpImplem->renderManager->Render();
-
-        mpImplem->deltaT = mpImplem->gameLoopTimer.Elapsed();
-
-        mpImplem->fpsCount++;
-        mpImplem->engineTicks++;
-        if(mpImplem->fpsTimer.GetPassedTime() >= 1.0f) {
-            mpImplem->framesPerSecond = mpImplem->fpsCount;
-            mpImplem->fpsCount = 0;
-            mpImplem->fpsTimer.Restart();
-
-            mpImplem->eventManager->CastEvent(CEventSecondPassed{});
-        }
     }
 
     void CApp::Shutdown() {
@@ -98,8 +85,24 @@ namespace Simpleton {
             OnInit();
             
             while(mpImplem->isInternalRunning) {
+                mpImplem->renderManager->PrepareFrame();
+
                 CApp::OnUpdate(mpImplem->deltaT);
                 OnUpdate(mpImplem->deltaT);
+
+                mpImplem->renderManager->RenderFrame();
+
+                // Get delta time and frames per second
+                mpImplem->deltaT = mpImplem->gameLoopTimer.Elapsed();
+                mpImplem->fpsCount++;
+                mpImplem->engineTicks++;
+                if(mpImplem->fpsTimer.GetPassedTime() >= 1.0f) {
+                    mpImplem->framesPerSecond = mpImplem->fpsCount;
+                    mpImplem->fpsCount = 0;
+                    mpImplem->fpsTimer.Restart();
+
+                    mpImplem->eventManager->CastEvent(CEventSecondPassed{});
+                }
             }
             
             OnDestroy();

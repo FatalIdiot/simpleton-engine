@@ -14,7 +14,8 @@ namespace Simpleton {
             virtual bool OnInit(std::shared_ptr<CDependencyResolver> depResolver) = 0;
             virtual void OnDestroy() = 0;
 
-            virtual void Render() = 0;
+            virtual void PrepareFrame() = 0;
+            virtual void RenderFrame() = 0;
 
         protected:
             std::shared_ptr<CLogger> mpLogger;
