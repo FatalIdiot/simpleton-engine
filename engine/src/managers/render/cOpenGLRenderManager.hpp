@@ -20,7 +20,7 @@ namespace Simpleton {
 
             void SetClearColor(float r, float g, float b) override;
 
-            void FillTriangle(Triangle<float> triangle) override;
+            void FillTriangle(Triangle<unsigned int> triangle) override;
 
         private:
             GLFWwindow *mWindow;

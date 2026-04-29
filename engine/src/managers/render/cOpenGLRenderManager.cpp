@@ -37,14 +37,11 @@ namespace Simpleton {
         glClearColor(r, g, b, 1.0f);
     }
 
-    void COpenGLRenderManager::FillTriangle(Triangle<float> triangle) {
-        // Temp imediate draw
-
-        Triangle<float> vertsBuffer[] = {
-            triangle.p1, triangle.p2, triangle.p3
-        };
+    void COpenGLRenderManager::FillTriangle(Triangle<unsigned int> triangle) {
+        CDependencyResolver* depResolver = reinterpret_cast<CDependencyResolver*>(glfwGetWindowUserPointer(mWindow));
+        Triangle<float> triangleScreen = depResolver->GetWindowManager()->CastWindowToScreen(triangle);
         mPrimitiveShader.Bind();
-        mPrimitiveMesh.Draw(vertsBuffer, 3);
+        mPrimitiveMesh.Draw(&triangleScreen, 3);
     }
 
     void COpenGLRenderManager::PrepareFrame() {

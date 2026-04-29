@@ -8,6 +8,6 @@ namespace Simpleton {
         public:
             virtual void SetClearColor(float r, float g, float b) = 0;
 
-            virtual void FillTriangle(Triangle<float> triangle) = 0;
+            virtual void FillTriangle(Triangle<unsigned int> triangle) = 0;
     };
 }

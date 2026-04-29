@@ -7,6 +7,9 @@ namespace Simpleton {
     bool CWindowManager::OnInit(unsigned int wWidth, unsigned int wHeight, std::string windowName,
             std::shared_ptr<CDependencyResolver> depResolver) 
     {
+        width = wWidth;
+        height = wHeight;
+
         mpLogger = depResolver->GetLogger();
         *mpLogger << "Window Manager init...\n";
 
@@ -46,5 +49,20 @@ namespace Simpleton {
 
     GLFWwindow* CWindowManager::GetWindow() {
         return mWindow;
+    }
+
+    Point<float> CWindowManager::CastWindowToScreen(Point<unsigned int> point) {
+        return Point<float>{
+            (static_cast<float>(point.x) / static_cast<float>(width)) * 2.0f - 1.0f,
+            ((static_cast<float>(point.y) / static_cast<float>(height)) * 2.0f - 1.0f) * -1.0f
+        };
+    }
+
+    Triangle<float> CWindowManager::CastWindowToScreen(Triangle<unsigned int> triangle) {
+        return Triangle<float>{
+            CastWindowToScreen(triangle.p1),
+            CastWindowToScreen(triangle.p2),
+            CastWindowToScreen(triangle.p3)
+        };
     }
 }

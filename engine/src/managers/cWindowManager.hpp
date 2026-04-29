@@ -6,6 +6,9 @@
 #include "./iManagerInternal.hpp"
 #include "simpleton/managers/iWindowManager.hpp"
 
+#include "simpleton/util/primitives/point.hpp"
+#include "simpleton/util/primitives/triangle.hpp"
+
 typedef struct GLFWwindow GLFWwindow;
 
 namespace Simpleton
@@ -21,7 +24,12 @@ namespace Simpleton
 
             GLFWwindow* GetWindow();
 
+            Point<float> CastWindowToScreen(Point<unsigned int> point);
+            Triangle<float> CastWindowToScreen(Triangle<unsigned int> triangle);
+
         private:
+            unsigned int width, height;
+
             std::shared_ptr<CLogger> mpLogger;
             GLFWwindow *mWindow;
     };

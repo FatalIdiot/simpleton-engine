@@ -6,6 +6,10 @@
 #include <simpleton/events/iEventHandler.hpp>
 #include <simpleton/events/cEventWindowClose.hpp>
 
+const unsigned int WIN_WIDTH = 800;
+const unsigned int WIN_HEIGHT = 600;
+
+
 class SandboxApp : public Simpleton::CApp, public Simpleton::IEventHandler {
     public:
         SandboxApp(unsigned int wWidth, unsigned int wHeight, std::string windowName)
@@ -25,7 +29,7 @@ class SandboxApp : public Simpleton::CApp, public Simpleton::IEventHandler {
         }
 
         void OnUpdate(float dt) override {
-            mRenderManager->FillTriangle({{0.0f, 0.0f}, {1.0f, 0.0f}, {0.0f, 1.0f}});
+            mRenderManager->FillTriangle({{0, 0}, {WIN_WIDTH, 0}, {0, WIN_HEIGHT}});
         }
 
         void OnDestroy() override {
@@ -36,7 +40,7 @@ class SandboxApp : public Simpleton::CApp, public Simpleton::IEventHandler {
 int main() {
     std::cout << "\n\n..:: Simpleton Sandbox Start ::..\n";
 
-    SandboxApp SandboxApp{800, 600, "Test"};
+    SandboxApp SandboxApp{WIN_WIDTH, WIN_HEIGHT, "Test"};
     SandboxApp.mInputManager->AddBinding(KEY_ESCAPE, [&SandboxApp]() -> void {
         SandboxApp.Shutdown();
     });
