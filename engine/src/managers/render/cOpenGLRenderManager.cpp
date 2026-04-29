@@ -17,9 +17,10 @@ namespace Simpleton {
             "}\0");
         mPrimitiveShader.AddShaderSource(ShaderType::FragmentShader, "#version 330 core\n"
             "out vec4 FragColor;\n"
+            "uniform vec4 Color;\n"
             "void main()\n"
             "{\n"
-            "    FragColor = vec4(1.0, 0.0, 0.0, 1.0);\n"
+            "    FragColor = Color;\n"
             "}\0");
         if(!mPrimitiveShader.Compile()) {
             *mpLogger << "\nOGL Renderer init ERROR: Failed to compile primitive shader!\n";
@@ -37,10 +38,13 @@ namespace Simpleton {
         glClearColor(r, g, b, 1.0f);
     }
 
-    void COpenGLRenderManager::FillTriangle(Triangle<unsigned int> triangle) {
+    void COpenGLRenderManager::FillTriangle(Triangle<unsigned int> triangle, Color<float> color) {
         CDependencyResolver* depResolver = reinterpret_cast<CDependencyResolver*>(glfwGetWindowUserPointer(mWindow));
         Triangle<float> triangleScreen = depResolver->GetWindowManager()->CastWindowToScreen(triangle);
+        
         mPrimitiveShader.Bind();
+        mPrimitiveShader.SetUniform("Color", color.r, color.g, color.b, color.a);
+
         mPrimitiveMesh.Draw(&triangleScreen, 3);
     }
 

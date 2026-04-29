@@ -5,6 +5,7 @@
 #include "../../graphics/opengl/cPrimitiveMesh.hpp"
 
 #include "simpleton/util/primitives/triangle.hpp"
+#include "simpleton/util/primitives/color.hpp"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -20,7 +21,7 @@ namespace Simpleton {
 
             void SetClearColor(float r, float g, float b) override;
 
-            void FillTriangle(Triangle<unsigned int> triangle) override;
+            void FillTriangle(Triangle<unsigned int> triangle, Color<float> color) override;
 
         private:
             GLFWwindow *mWindow;

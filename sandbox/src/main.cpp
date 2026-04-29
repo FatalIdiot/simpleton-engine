@@ -29,7 +29,10 @@ class SandboxApp : public Simpleton::CApp, public Simpleton::IEventHandler {
         }
 
         void OnUpdate(float dt) override {
-            mRenderManager->FillTriangle({{0, 0}, {WIN_WIDTH, 0}, {0, WIN_HEIGHT}});
+            mRenderManager->FillTriangle(
+                {{0, 0}, {WIN_WIDTH, 0}, {0, WIN_HEIGHT}}, 
+                {0.0f, 1.0f, 0.0f, 1.0f}
+            );
         }
 
         void OnDestroy() override {
