@@ -1,6 +1,6 @@
 #pragma once
 
-#include "simpleton/util/primitives/vec2.hpp"
+#include "simpleton/util/primitives/triangle.hpp"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -12,7 +12,7 @@ namespace Simpleton {
             ~CPrimitiveMesh();
 
             // Make draw call for this mesh
-            void Draw(const Vec2<float>* pData, unsigned int count);
+            void Draw(const Triangle<float>* pData, unsigned int count);
 
         private:
             unsigned int mVBO, mVAO;

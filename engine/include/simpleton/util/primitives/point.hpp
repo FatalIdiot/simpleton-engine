@@ -2,7 +2,7 @@
 
 namespace Simpleton {
     template <typename T>
-    struct Vec2 {
+    struct Point {
         T x, y;
     };
 }

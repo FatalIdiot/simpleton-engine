@@ -16,7 +16,7 @@ namespace Simpleton {
         mIsInited = true;
     }
 
-    void CPrimitiveMesh::Draw(const Vec2<float>* pData, unsigned int count) {
+    void CPrimitiveMesh::Draw(const Triangle<float>* pData, unsigned int count) {
         Init();
 
         glBindVertexArray(mVAO);

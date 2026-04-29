@@ -37,11 +37,11 @@ namespace Simpleton {
         glClearColor(r, g, b, 1.0f);
     }
 
-    void COpenGLRenderManager::FillTriangle(Vec2<float> p1, Vec2<float> p2, Vec2<float> p3) {
+    void COpenGLRenderManager::FillTriangle(Triangle<float> triangle) {
         // Temp imediate draw
 
-        Vec2<float> vertsBuffer[] = {
-            p1, p2, p3
+        Triangle<float> vertsBuffer[] = {
+            triangle.p1, triangle.p2, triangle.p3
         };
         mPrimitiveShader.Bind();
         mPrimitiveMesh.Draw(vertsBuffer, 3);
