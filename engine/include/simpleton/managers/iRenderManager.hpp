@@ -2,6 +2,7 @@
 
 #include "simpleton/managers/iManager.hpp"
 #include "simpleton/util/primitives/triangle.hpp"
+#include "simpleton/util/primitives/rect.hpp"
 #include "simpleton/util/primitives/color.hpp"
 
 namespace Simpleton {
@@ -10,5 +11,6 @@ namespace Simpleton {
             virtual void SetClearColor(float r, float g, float b) = 0;
 
             virtual void FillTriangle(Triangle<unsigned int> triangle, Color<float> color) = 0;
+            virtual void FillRect(Rect<unsigned int> rect, Color<float> color) = 0;
     };
 }

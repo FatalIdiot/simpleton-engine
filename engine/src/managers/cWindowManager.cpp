@@ -19,7 +19,7 @@ namespace Simpleton {
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
         // glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
-        mWindow = glfwCreateWindow(wWidth, wHeight, windowName.c_str(), NULL, NULL);
+        mWindow = glfwCreateWindow(width, height, windowName.c_str(), NULL, NULL);
         if (mWindow == NULL)
         {
             *mpLogger << "Failed to create GLFW window.\n";
@@ -34,7 +34,7 @@ namespace Simpleton {
             return false;
         }   
 
-        glViewport(0, 0, wWidth, wHeight);
+        glViewport(0, 0, width, height);
 
         *mpLogger << "Window initialized.\n";
         mIsInitialized = true;
@@ -64,5 +64,15 @@ namespace Simpleton {
             CastWindowToScreen(triangle.p2),
             CastWindowToScreen(triangle.p3)
         };
+    }
+
+    Rect<float> CWindowManager::CastWindowToScreen(Rect<unsigned int> rect) {
+        Rect<float> tempRect{
+            CastWindowToScreen(rect.pos),
+            static_cast<float>(rect.w) / static_cast<float>(width / 2),
+            static_cast<float>(rect.h) / static_cast<float>(height / 2) * -1
+        };
+
+        return tempRect;
     }
 }

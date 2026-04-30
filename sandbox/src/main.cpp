@@ -33,6 +33,11 @@ class SandboxApp : public Simpleton::CApp, public Simpleton::IEventHandler {
                 {{0, 0}, {WIN_WIDTH, 0}, {0, WIN_HEIGHT}}, 
                 {0.0f, 1.0f, 0.0f, 1.0f}
             );
+
+            mRenderManager->FillRect(
+                {{WIN_WIDTH-50, WIN_HEIGHT-50}, 50, 50},
+                {1.0f, 0.0f, 0.0f, 1.0f}
+            );
         }
 
         void OnDestroy() override {

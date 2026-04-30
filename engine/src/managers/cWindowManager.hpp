@@ -8,6 +8,7 @@
 
 #include "simpleton/util/primitives/point.hpp"
 #include "simpleton/util/primitives/triangle.hpp"
+#include "simpleton/util/primitives/rect.hpp"
 
 typedef struct GLFWwindow GLFWwindow;
 
@@ -26,6 +27,7 @@ namespace Simpleton
 
             Point<float> CastWindowToScreen(Point<unsigned int> point);
             Triangle<float> CastWindowToScreen(Triangle<unsigned int> triangle);
+            Rect<float> CastWindowToScreen(Rect<unsigned int> rect);
 
         private:
             unsigned int width, height;

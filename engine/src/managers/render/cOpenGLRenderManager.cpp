@@ -48,6 +48,16 @@ namespace Simpleton {
         mPrimitiveMesh.Draw(&triangleScreen, 3);
     }
 
+    void COpenGLRenderManager::FillRect(Rect<unsigned int> rect, Color<float> color) {
+        CDependencyResolver* depResolver = reinterpret_cast<CDependencyResolver*>(glfwGetWindowUserPointer(mWindow));
+        Rect<float> rectScreen = depResolver->GetWindowManager()->CastWindowToScreen(rect);
+
+        mPrimitiveShader.Bind();
+        mPrimitiveShader.SetUniform("Color", color.r, color.g, color.b, color.a);
+
+        mPrimitiveMesh.Draw(rectScreen.ConvertToTriangles().data(), 6);
+    }
+
     void COpenGLRenderManager::PrepareFrame() {
         glClear(GL_COLOR_BUFFER_BIT);
     }
