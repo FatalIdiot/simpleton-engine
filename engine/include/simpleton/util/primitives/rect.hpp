@@ -26,5 +26,14 @@ namespace Simpleton {
                 }
             };
         }
+
+        std::array<Point<T>, 4> GetVerts() {
+            return {
+                Point<T>{ pos.x, pos.y },
+                Point<T>{ pos.x + w, pos.y },
+                Point<T>{ pos.x + w, pos.y + h },
+                Point<T>{ pos.x, pos.y + h }
+            };
+        }
     };
 }

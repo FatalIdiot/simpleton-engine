@@ -13,9 +13,10 @@ namespace Simpleton {
 
             // Make draw call for this mesh
             void Draw(const Triangle<float>* pData, unsigned int count);
+            void Draw(const Point<float>* pData, const unsigned int* pIndices, unsigned int pointsCount, unsigned int indicesCount);
 
         private:
-            unsigned int mVBO, mVAO;
+            unsigned int mVBO, mVAO, mEBO;
 
             // Can't always init in constructor before systems are up, manually init check in functions 
             bool mIsInited = false;

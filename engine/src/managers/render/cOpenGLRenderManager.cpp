@@ -1,3 +1,5 @@
+#include <array>
+
 #include "./cOpenGLRenderManager.hpp"
 #include "../cWindowManager.hpp"
 
@@ -50,12 +52,21 @@ namespace Simpleton {
 
     void COpenGLRenderManager::FillRect(Rect<unsigned int> rect, Color<float> color) {
         CDependencyResolver* depResolver = reinterpret_cast<CDependencyResolver*>(glfwGetWindowUserPointer(mWindow));
-        Rect<float> rectScreen = depResolver->GetWindowManager()->CastWindowToScreen(rect);
+        auto windowManager = depResolver->GetWindowManager();
+
+        std::array<Point<unsigned int>, 4> rectVerts = rect.GetVerts();
+        Point<float> rectScreenVerts[] = {
+            windowManager->CastWindowToScreen(rectVerts[0]),
+            windowManager->CastWindowToScreen(rectVerts[1]),
+            windowManager->CastWindowToScreen(rectVerts[2]),
+            windowManager->CastWindowToScreen(rectVerts[3])
+        };
+        unsigned int indeces[] = {0, 1, 3, 1, 2, 3};
 
         mPrimitiveShader.Bind();
         mPrimitiveShader.SetUniform("Color", color.r, color.g, color.b, color.a);
 
-        mPrimitiveMesh.Draw(rectScreen.ConvertToTriangles().data(), 6);
+        mPrimitiveMesh.Draw(rectScreenVerts, indeces, 8, 6);
     }
 
     void COpenGLRenderManager::PrepareFrame() {
