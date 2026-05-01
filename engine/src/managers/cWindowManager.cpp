@@ -36,6 +36,22 @@ namespace Simpleton {
 
         glViewport(0, 0, width, height);
 
+        *mpLogger << "\n";
+        *mpLogger << "GL_VENDOR: " << glGetString(GL_VENDOR) << "\n";
+        *mpLogger << "GL_RENDERER: " << glGetString(GL_RENDERER) << "\n";
+        *mpLogger << "GL_VERSION: " << glGetString(GL_VERSION) << "\n";
+        *mpLogger << "GL_SHADING_LANGUAGE_VERSION: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << "\n";
+        int monitorsCount;
+        GLFWmonitor** monitors = glfwGetMonitors(&monitorsCount);
+        if(monitors != NULL) {
+            *mpLogger << "Monitors: " << monitorsCount << "\n";
+            for (int i = 0; i < monitorsCount; i++) {
+                *mpLogger << " - " << glfwGetMonitorName(monitors[i]) << "\n";
+            }
+        }
+        *mpLogger << "Primary monitor: " << glfwGetMonitorName(glfwGetPrimaryMonitor()) << "\n";
+        *mpLogger << "\n";
+
         *mpLogger << "Window initialized.\n";
         mIsInitialized = true;
         return true;
