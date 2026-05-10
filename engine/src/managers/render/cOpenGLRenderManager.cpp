@@ -1,5 +1,6 @@
 #include <array>
 
+#include "simpleton/util/primitives/point.hpp"
 #include "./cOpenGLRenderManager.hpp"
 #include "../cWindowManager.hpp"
 
@@ -13,9 +14,18 @@ namespace Simpleton {
 
         mPrimitiveShader.AddShaderSource(ShaderType::VertexShader, "#version 330 core\n"
             "layout (location = 0) in vec2 aPos;\n"
+            "uniform vec2 CenterPoint;\n"
+            "uniform float rotationAng;\n"
             "void main()\n"
             "{\n"
-            "   gl_Position = vec4(aPos.x, aPos.y, 1.0, 1.0);\n"
+            "   float angle = radians(rotationAng);\n"
+            "   float s = sin(angle);\n"
+            "   float c = cos(angle);\n"
+
+            "   vec2 newPos = vec2(aPos.x - CenterPoint.x, aPos.y - CenterPoint.y);\n"
+            "   newPos = vec2(newPos.x * c - newPos.y * s, newPos.y * c + newPos.x * s);"
+            "   newPos = vec2(newPos.x + CenterPoint.x, newPos.y + CenterPoint.y);\n"
+            "   gl_Position = vec4(newPos, 1.0, 1.0);\n"
             "}\0");
         mPrimitiveShader.AddShaderSource(ShaderType::FragmentShader, "#version 330 core\n"
             "out vec4 FragColor;\n"
@@ -40,17 +50,20 @@ namespace Simpleton {
         glClearColor(r, g, b, 1.0f);
     }
 
-    void COpenGLRenderManager::FillTriangle(Triangle<unsigned int> triangle, Color<float> color) {
+    void COpenGLRenderManager::FillTriangle(Triangle<unsigned int> triangle, Color<float> color, float rotation) {
         CDependencyResolver* depResolver = reinterpret_cast<CDependencyResolver*>(glfwGetWindowUserPointer(mWindow));
         Triangle<float> triangleScreen = depResolver->GetWindowManager()->CastWindowToScreen(triangle);
         
         mPrimitiveShader.Bind();
         mPrimitiveShader.SetUniform("Color", color.r, color.g, color.b, color.a);
+        Point<float> centerPoint = triangleScreen.GetCenterPoint();
+        mPrimitiveShader.SetUniform("CenterPoint", centerPoint.x, centerPoint.y);
+        mPrimitiveShader.SetUniform("rotationAng", rotation);
 
         mPrimitiveMesh.Draw(&triangleScreen, 3);
     }
 
-    void COpenGLRenderManager::FillRect(Rect<unsigned int> rect, Color<float> color) {
+    void COpenGLRenderManager::FillRect(Rect<unsigned int> rect, Color<float> color, float rotation) {
         CDependencyResolver* depResolver = reinterpret_cast<CDependencyResolver*>(glfwGetWindowUserPointer(mWindow));
         auto windowManager = depResolver->GetWindowManager();
 
@@ -65,6 +78,9 @@ namespace Simpleton {
 
         mPrimitiveShader.Bind();
         mPrimitiveShader.SetUniform("Color", color.r, color.g, color.b, color.a);
+        Point<float> centerPoint = GetCenterPoint<float>(rectScreenVerts, 4);
+        mPrimitiveShader.SetUniform("CenterPoint", centerPoint.x, centerPoint.y);
+        mPrimitiveShader.SetUniform("rotationAng", rotation);
 
         mPrimitiveMesh.Draw(rectScreenVerts, indeces, 8, 6);
     }

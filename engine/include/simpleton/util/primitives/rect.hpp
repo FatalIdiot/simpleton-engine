@@ -35,5 +35,12 @@ namespace Simpleton {
                 Point<T>{ pos.x, pos.y + h }
             };
         }
+
+        Point<T> GetCenterPoint() {
+            return {
+                pos.x + (2 / 2),
+                pos.y + (h / 2)
+            };
+        }
     };
 }

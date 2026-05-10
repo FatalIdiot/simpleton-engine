@@ -9,6 +9,7 @@
 const unsigned int WIN_WIDTH = 800;
 const unsigned int WIN_HEIGHT = 600;
 
+float rotationAng = 0.0f;
 
 class SandboxApp : public Simpleton::CApp, public Simpleton::IEventHandler {
     public:
@@ -29,14 +30,18 @@ class SandboxApp : public Simpleton::CApp, public Simpleton::IEventHandler {
         }
 
         void OnUpdate(float dt) override {
+            rotationAng += 90.0f * dt;
+
             mRenderManager->FillTriangle(
                 {{0, 0}, {WIN_WIDTH, 0}, {0, WIN_HEIGHT}}, 
-                {0.0f, 1.0f, 0.0f, 1.0f}
+                {0.0f, 1.0f, 0.0f, 1.0f}, 
+                rotationAng
             );
 
             mRenderManager->FillRect(
                 {{WIN_WIDTH-50, WIN_HEIGHT-50}, 50, 50},
-                {1.0f, 0.0f, 0.0f, 1.0f}
+                {1.0f, 0.0f, 0.0f, 1.0f},
+                rotationAng
             );
         }
 

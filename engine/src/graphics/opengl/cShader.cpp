@@ -110,9 +110,19 @@ namespace Simpleton {
         glUniform4f(uniformLocation, x, y, z, w);
     }
 
+    void CShader::SetUniform(const char* name, float x, float y) {
+        int uniformLocation = glGetUniformLocation(mShaderProgId, name);
+        glUniform2f(uniformLocation, x, y);
+    }
+
     void CShader::SetUniform(const char* name, int i) {
         int uniformLocation = glGetUniformLocation(mShaderProgId, name);
         glUniform1i(uniformLocation, i);
+    }
+
+    void CShader::SetUniform(const char* name, float f) {
+        int uniformLocation = glGetUniformLocation(mShaderProgId, name);
+        glUniform1f(uniformLocation, f);
     }
 
     void CShader::Bind() const {
