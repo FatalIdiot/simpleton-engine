@@ -38,6 +38,8 @@ namespace Simpleton {
             void Bind() const;
             void Unbind() const;
 
+            unsigned int GetProgId() const;
+
             std::string GetErrorLog();
 
         private:

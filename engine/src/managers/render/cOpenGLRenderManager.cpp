@@ -4,27 +4,40 @@
 #include "./cOpenGLRenderManager.hpp"
 #include "../cWindowManager.hpp"
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 namespace Simpleton {
     bool COpenGLRenderManager::OnInit(std::shared_ptr<CDependencyResolver> depResolver) {
         mpLogger = depResolver->GetLogger();
         mWindow = depResolver->GetWindowManager()->GetWindow();
+        mpDepResolver = depResolver;
         *mpLogger << "Render Manager init...\n";
 
         SetClearColor(0.0f, 0.0f, 0.0f);
 
         mPrimitiveShader.AddShaderSource(ShaderType::VertexShader, "#version 330 core\n"
             "layout (location = 0) in vec2 aPos;\n"
+            "uniform vec2 ScreenSize;\n"
             "uniform vec2 CenterPoint;\n"
             "uniform float rotationAng;\n"
             "void main()\n"
             "{\n"
             "   float angle = radians(rotationAng);\n"
+            "   float aspect = ScreenSize.x / ScreenSize.y;\n"
             "   float s = sin(angle);\n"
             "   float c = cos(angle);\n"
 
             "   vec2 newPos = vec2(aPos.x - CenterPoint.x, aPos.y - CenterPoint.y);\n"
-            "   newPos = vec2(newPos.x * c - newPos.y * s, newPos.y * c + newPos.x * s);"
+            "   newPos.x *= aspect;\n"
+            "   newPos = vec2(\n"
+            "       newPos.x * c - newPos.y * s,\n"
+            "       newPos.y * c + newPos.x * s\n"
+            "   );\n"
+            "   newPos.x /= aspect;"
             "   newPos = vec2(newPos.x + CenterPoint.x, newPos.y + CenterPoint.y);\n"
+
             "   gl_Position = vec4(newPos, 1.0, 1.0);\n"
             "}\0");
         mPrimitiveShader.AddShaderSource(ShaderType::FragmentShader, "#version 330 core\n"
@@ -60,6 +73,8 @@ namespace Simpleton {
         mPrimitiveShader.SetUniform("CenterPoint", centerPoint.x, centerPoint.y);
         mPrimitiveShader.SetUniform("rotationAng", rotation);
 
+        SetGlobalUniforms(mPrimitiveShader.GetProgId());
+
         mPrimitiveMesh.Draw(&triangleScreen, 3);
     }
 
@@ -82,6 +97,8 @@ namespace Simpleton {
         mPrimitiveShader.SetUniform("CenterPoint", centerPoint.x, centerPoint.y);
         mPrimitiveShader.SetUniform("rotationAng", rotation);
 
+        SetGlobalUniforms(mPrimitiveShader.GetProgId());
+
         mPrimitiveMesh.Draw(rectScreenVerts, indeces, 8, 6);
     }
 
@@ -91,5 +108,11 @@ namespace Simpleton {
 
     void COpenGLRenderManager::RenderFrame() {
         glfwSwapBuffers(mWindow);
+    }
+
+    void COpenGLRenderManager::SetGlobalUniforms(unsigned int shaderProgId) {
+        int uniformLocation = glGetUniformLocation(shaderProgId, "ScreenSize");
+        Point<unsigned int> winSize = mpDepResolver->GetWindowManager()->GetWindowSize();
+        glUniform2f(uniformLocation, static_cast<float>(winSize.x), static_cast<float>(winSize.y));
     }
 }

@@ -7,8 +7,8 @@ namespace Simpleton {
     bool CWindowManager::OnInit(unsigned int wWidth, unsigned int wHeight, std::string windowName,
             std::shared_ptr<CDependencyResolver> depResolver) 
     {
-        width = wWidth;
-        height = wHeight;
+        mWidth = wWidth;
+        mHeight = wHeight;
 
         mpLogger = depResolver->GetLogger();
         *mpLogger << "Window Manager init...\n";
@@ -19,7 +19,7 @@ namespace Simpleton {
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
         // glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
-        mWindow = glfwCreateWindow(width, height, windowName.c_str(), NULL, NULL);
+        mWindow = glfwCreateWindow(mWidth, mHeight, windowName.c_str(), NULL, NULL);
         if (mWindow == NULL)
         {
             *mpLogger << "Failed to create GLFW window.\n";
@@ -34,7 +34,7 @@ namespace Simpleton {
             return false;
         }   
 
-        glViewport(0, 0, width, height);
+        glViewport(0, 0, mWidth, mHeight);
 
         *mpLogger << "\n";
         *mpLogger << "GL_VENDOR: " << glGetString(GL_VENDOR) << "\n";
@@ -67,10 +67,16 @@ namespace Simpleton {
         return mWindow;
     }
 
+    Point<unsigned int> CWindowManager::GetWindowSize() {
+        return Point<unsigned int>{
+            mWidth, mHeight
+        };
+    }
+
     Point<float> CWindowManager::CastWindowToScreen(Point<unsigned int> point) {
         return Point<float>{
-            (static_cast<float>(point.x) / static_cast<float>(width)) * 2.0f - 1.0f,
-            ((static_cast<float>(point.y) / static_cast<float>(height)) * 2.0f - 1.0f) * -1.0f
+            (static_cast<float>(point.x) / static_cast<float>(mWidth)) * 2.0f - 1.0f,
+            ((static_cast<float>(point.y) / static_cast<float>(mHeight)) * 2.0f - 1.0f) * -1.0f
         };
     }
 
@@ -85,8 +91,8 @@ namespace Simpleton {
     Rect<float> CWindowManager::CastWindowToScreen(Rect<unsigned int> rect) {
         Rect<float> tempRect{
             CastWindowToScreen(rect.pos),
-            static_cast<float>(rect.w) / static_cast<float>(width / 2),
-            static_cast<float>(rect.h) / static_cast<float>(height / 2) * -1
+            static_cast<float>(rect.w) / static_cast<float>(mWidth / 2),
+            static_cast<float>(rect.h) / static_cast<float>(mHeight / 2) * -1
         };
 
         return tempRect;

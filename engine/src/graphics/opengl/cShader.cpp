@@ -133,6 +133,10 @@ namespace Simpleton {
         glUseProgram(0);
     }
 
+    unsigned int CShader::GetProgId() const {
+        return mShaderProgId;
+    }
+
     void CShader::Terminate() {
         glDeleteShader(mVertexShader);
         glDeleteShader(mFragmentShader);

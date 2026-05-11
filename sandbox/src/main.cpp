@@ -10,6 +10,7 @@ const unsigned int WIN_WIDTH = 800;
 const unsigned int WIN_HEIGHT = 600;
 
 float rotationAng = 0.0f;
+bool rotationEnabled = false;
 
 class SandboxApp : public Simpleton::CApp, public Simpleton::IEventHandler {
     public:
@@ -30,7 +31,8 @@ class SandboxApp : public Simpleton::CApp, public Simpleton::IEventHandler {
         }
 
         void OnUpdate(float dt) override {
-            rotationAng += 90.0f * dt;
+            if(rotationEnabled)
+                rotationAng += 90.0f * dt;
 
             mRenderManager->FillTriangle(
                 {{0, 0}, {WIN_WIDTH, 0}, {0, WIN_HEIGHT}}, 
@@ -54,12 +56,23 @@ int main() {
     std::cout << "\n\n..:: Simpleton Sandbox Start ::..\n";
 
     SandboxApp SandboxApp{WIN_WIDTH, WIN_HEIGHT, "Test"};
+    
     SandboxApp.mInputManager->AddBinding(KEY_ESCAPE, [&SandboxApp]() -> void {
         SandboxApp.Shutdown();
     });
     SandboxApp.mInputManager->AddBinding(KEY_GRAVE_ACCENT, [&SandboxApp]() -> void {
         SandboxApp.Restart();
     });
+    SandboxApp.mInputManager->AddBinding(KEY_LEFT, []() -> void {
+        rotationAng -= 10.0f;
+    });
+    SandboxApp.mInputManager->AddBinding(KEY_RIGHT, []() -> void {
+        rotationAng += 10.0f;
+    });
+    SandboxApp.mInputManager->AddBinding(KEY_SPACE, []() -> void {
+        rotationEnabled = !rotationEnabled;
+    });
+
     SandboxApp.Run();
 
     std::cout << "..:: Simpleton Sandbox End ::..\n\n";

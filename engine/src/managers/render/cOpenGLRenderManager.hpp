@@ -26,8 +26,12 @@ namespace Simpleton {
             void FillRect(Rect<unsigned int> rect, Color<float> color, float rotation = 0) override;
 
         private:
+            std::shared_ptr<CDependencyResolver> mpDepResolver = nullptr;
             GLFWwindow *mWindow;
             CShader mPrimitiveShader;
             CPrimitiveMesh mPrimitiveMesh;
+
+            // Sets common uniforms to shader
+            void SetGlobalUniforms(unsigned int shaderProgId);
     };
 }

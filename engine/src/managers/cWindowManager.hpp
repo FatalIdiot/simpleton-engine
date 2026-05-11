@@ -24,13 +24,14 @@ namespace Simpleton
             void OnDestroy();
 
             GLFWwindow* GetWindow();
+            Point<unsigned int> GetWindowSize();
 
             Point<float> CastWindowToScreen(Point<unsigned int> point);
             Triangle<float> CastWindowToScreen(Triangle<unsigned int> triangle);
             Rect<float> CastWindowToScreen(Rect<unsigned int> rect);
 
         private:
-            unsigned int width, height;
+            unsigned int mWidth, mHeight;
 
             std::shared_ptr<CLogger> mpLogger;
             GLFWwindow *mWindow;
