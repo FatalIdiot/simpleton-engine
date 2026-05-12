@@ -72,29 +72,4 @@ namespace Simpleton {
             mWidth, mHeight
         };
     }
-
-    Point<float> CWindowManager::CastWindowToScreen(Point<unsigned int> point) {
-        return Point<float>{
-            (static_cast<float>(point.x) / static_cast<float>(mWidth)) * 2.0f - 1.0f,
-            ((static_cast<float>(point.y) / static_cast<float>(mHeight)) * 2.0f - 1.0f) * -1.0f
-        };
-    }
-
-    Triangle<float> CWindowManager::CastWindowToScreen(Triangle<unsigned int> triangle) {
-        return Triangle<float>{
-            CastWindowToScreen(triangle.p1),
-            CastWindowToScreen(triangle.p2),
-            CastWindowToScreen(triangle.p3)
-        };
-    }
-
-    Rect<float> CWindowManager::CastWindowToScreen(Rect<unsigned int> rect) {
-        Rect<float> tempRect{
-            CastWindowToScreen(rect.pos),
-            static_cast<float>(rect.w) / static_cast<float>(mWidth / 2),
-            static_cast<float>(rect.h) / static_cast<float>(mHeight / 2) * -1
-        };
-
-        return tempRect;
-    }
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "./point.hpp"
+#include <array>
 
 namespace Simpleton {
     template <typename T>
@@ -13,6 +14,12 @@ namespace Simpleton {
             return {
                 (p1.x + p2.x + p3.x) / 3,
                 (p1.y + p2.y + p3.y) / 3
+            };
+        }
+
+        std::array<Point<T>, 3> GetPoints() {
+            return {
+                p1, p2, p3
             };
         }
     };

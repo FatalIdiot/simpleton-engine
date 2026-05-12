@@ -4,6 +4,10 @@
 #include <filesystem>
 namespace fs = std::filesystem;
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 namespace Simpleton {
     enum ShaderType {
         VertexShader,
@@ -34,6 +38,7 @@ namespace Simpleton {
             void SetUniform(const char* name, float x, float y);
             void SetUniform(const char* name, int i);
             void SetUniform(const char* name, float f);
+            void SetUniform(const char* name, glm::mat4 matrix);
 
             void Bind() const;
             void Unbind() const;

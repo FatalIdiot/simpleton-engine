@@ -23,8 +23,8 @@ namespace Simpleton {
             void SetClearColor(float r, float g, float b) override;
             void SetWireframe(bool enable) override;
 
-            void FillTriangle(Triangle<unsigned int> triangle, Color<float> color, float rotation = 0) override;
-            void FillRect(Rect<unsigned int> rect, Color<float> color, float rotation = 0) override;
+            void FillTriangle(Triangle<int> triangle, Color<float> color, float rotation = 0) override;
+            void FillRect(Rect<int> rect, Color<float> color, float rotation = 0) override;
 
         private:
             std::shared_ptr<CDependencyResolver> mpDepResolver = nullptr;

@@ -12,8 +12,8 @@ namespace Simpleton {
             ~CPrimitiveMesh();
 
             // Make draw call for this mesh
-            void Draw(const Triangle<float>* pData, unsigned int count);
-            void Draw(const Point<float>* pData, const unsigned int* pIndices, unsigned int pointsCount, unsigned int indicesCount);
+            void Draw(const Point<int>* pData, unsigned int pointCount);
+            void Draw(const Point<int>* pData, const unsigned int* pIndices, unsigned int pointsCount, unsigned int indicesCount);
 
         private:
             unsigned int mVBO, mVAO, mEBO;

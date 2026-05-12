@@ -26,10 +26,6 @@ namespace Simpleton
             GLFWwindow* GetWindow();
             Point<unsigned int> GetWindowSize();
 
-            Point<float> CastWindowToScreen(Point<unsigned int> point);
-            Triangle<float> CastWindowToScreen(Triangle<unsigned int> triangle);
-            Rect<float> CastWindowToScreen(Rect<unsigned int> rect);
-
         private:
             unsigned int mWidth, mHeight;
 

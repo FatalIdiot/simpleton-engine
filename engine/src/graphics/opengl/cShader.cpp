@@ -125,6 +125,11 @@ namespace Simpleton {
         glUniform1f(uniformLocation, f);
     }
 
+    void CShader::SetUniform(const char* name, glm::mat4 matrix) {
+        int uniformLocation = glGetUniformLocation(mShaderProgId, name);
+        glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(matrix));
+    }
+
     void CShader::Bind() const {
         glUseProgram(mShaderProgId);
     }
