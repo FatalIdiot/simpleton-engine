@@ -82,9 +82,17 @@ namespace Simpleton {
 
         glm::mat4 orthoMat = glm::ortho(0.0f, static_cast<float>(windowSize.x), static_cast<float>(windowSize.y), 1.0f);
         glm::mat4 vertMat(1.0f);
-        vertMat = glm::translate(vertMat, glm::vec3(centerPoint.x, centerPoint.y, 0.0f));
+        vertMat = glm::translate(vertMat, glm::vec3(
+            centerPoint.x, 
+            centerPoint.y, 
+            0.0f
+        ));
         vertMat = glm::rotate(vertMat, glm::radians(rotation), glm::vec3(0.0f, 0.0f, 1.0f));
-        vertMat = glm::translate(vertMat, glm::vec3((centerPoint.x * -1), (centerPoint.y * -1), 0.0f));
+        vertMat = glm::translate(vertMat, glm::vec3(
+            centerPoint.x * -1, 
+            centerPoint.y * -1, 
+            0.0f
+        ));
 
         mPrimitiveShader.SetUniform("vertMat", orthoMat * vertMat);
 
