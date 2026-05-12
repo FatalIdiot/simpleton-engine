@@ -11,6 +11,7 @@ const unsigned int WIN_HEIGHT = 600;
 
 float rotationAng = 0.0f;
 bool rotationEnabled = false;
+bool wireframeEnabled = false;
 
 class SandboxApp : public Simpleton::CApp, public Simpleton::IEventHandler {
     public:
@@ -71,6 +72,10 @@ int main() {
     });
     SandboxApp.mInputManager->AddBinding(KEY_SPACE, []() -> void {
         rotationEnabled = !rotationEnabled;
+    });
+    SandboxApp.mInputManager->AddBinding(KEY_BACKSPACE, [&SandboxApp]() -> void {
+        wireframeEnabled = !wireframeEnabled;
+        SandboxApp.mRenderManager->SetWireframe(wireframeEnabled);
     });
 
     SandboxApp.Run();

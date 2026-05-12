@@ -62,6 +62,9 @@ namespace Simpleton {
     void COpenGLRenderManager::SetClearColor(float r, float g, float b) {
         glClearColor(r, g, b, 1.0f);
     }
+    void COpenGLRenderManager::SetWireframe(bool enable) {
+        glPolygonMode(GL_FRONT_AND_BACK, enable ? GL_LINE : GL_FILL);
+    }
 
     void COpenGLRenderManager::FillTriangle(Triangle<unsigned int> triangle, Color<float> color, float rotation) {
         CDependencyResolver* depResolver = reinterpret_cast<CDependencyResolver*>(glfwGetWindowUserPointer(mWindow));
