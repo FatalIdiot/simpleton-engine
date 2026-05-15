@@ -6,10 +6,10 @@
 #include <GLFW/glfw3.h>
 
 namespace Simpleton {
-    class CPrimitiveMesh {
+    class CPrimitiveMeshRender {
         public:
-            CPrimitiveMesh();
-            ~CPrimitiveMesh();
+            CPrimitiveMeshRender();
+            ~CPrimitiveMeshRender();
 
             // Make draw call for this mesh
             void Draw(const Point<int>* pData, unsigned int pointCount);

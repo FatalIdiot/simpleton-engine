@@ -1,12 +1,12 @@
-#include "./cPrimitiveMesh.hpp"
+#include "./cPrimitiveMeshRender.hpp"
 
 #include <iostream>
 
 namespace Simpleton {
-    CPrimitiveMesh::CPrimitiveMesh() {}
-    CPrimitiveMesh::~CPrimitiveMesh() {}
+    CPrimitiveMeshRender::CPrimitiveMeshRender() {}
+    CPrimitiveMeshRender::~CPrimitiveMeshRender() {}
 
-    void CPrimitiveMesh::Init() {
+    void CPrimitiveMeshRender::Init() {
         if(mIsInited)
             return;
 
@@ -20,7 +20,7 @@ namespace Simpleton {
         mIsInited = true;
     }
 
-    void CPrimitiveMesh::Draw(const Point<int>* pData, unsigned int pointCount) {
+    void CPrimitiveMeshRender::Draw(const Point<int>* pData, unsigned int pointCount) {
         Init();
 
         glBindVertexArray(mVAO);
@@ -31,7 +31,7 @@ namespace Simpleton {
         glDrawArrays(GL_TRIANGLES, 0, pointCount);
     }
 
-    void CPrimitiveMesh::Draw(const Point<int>* pData, const unsigned int* pIndices, unsigned int pointsCount, unsigned int indicesCount) {
+    void CPrimitiveMeshRender::Draw(const Point<int>* pData, const unsigned int* pIndices, unsigned int pointsCount, unsigned int indicesCount) {
         Init();
 
         glBindVertexArray(mVAO);
