@@ -1,6 +1,5 @@
 #include "./cShader.hpp"
 
-#include <iostream>
 #include <fstream>
 #include <sstream>
 
@@ -24,6 +23,16 @@ namespace Simpleton {
 
         mIsInited = true;
         mIsValid = false;
+    }
+
+    void CShader::Destroy() {
+        mIsInited = false;
+        mIsValid = false;
+        Bind();
+        glDeleteShader(mVertexShader);
+        glDeleteShader(mFragmentShader);
+        glDeleteProgram(mShaderProgId);
+        Unbind();
     }
 
     bool CShader::CheckShaderValid(ShaderType type) {

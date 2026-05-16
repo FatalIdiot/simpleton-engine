@@ -62,6 +62,9 @@ namespace Simpleton {
     }
     void COpenGLRenderManager::OnDestroy() {
         *mpLogger << "Render Manager destroy...\n";
+        mPrimitiveShader.Destroy();
+        mCircleShader.Destroy();
+        mPrimitiveMesh.Destroy();
     }
 
     void COpenGLRenderManager::SetClearColor(float r, float g, float b) {

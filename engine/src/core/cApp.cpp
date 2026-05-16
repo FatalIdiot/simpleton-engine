@@ -57,6 +57,9 @@ namespace Simpleton {
         mpImplem->inputManager->OnDestroy();
         mpImplem->eventManager->OnDestroy();
         mpImplem->windowManager->OnDestroy();
+
+        mpImplem->gameLoopTimer.Clear();
+        mpImplem->fpsTimer.Clear();
     };
 
     void CApp::OnUpdate(float dt) {

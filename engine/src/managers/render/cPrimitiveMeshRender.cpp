@@ -43,4 +43,13 @@ namespace Simpleton {
 
         glDrawElements(GL_TRIANGLES, indicesCount, GL_UNSIGNED_INT, 0);
     }
+
+    void CPrimitiveMeshRender::Destroy() {
+        glBindVertexArray(mVAO);
+        glDeleteBuffers(1, &mEBO);
+        glDeleteBuffers(1, &mVBO);
+        glDeleteVertexArrays(1, &mVAO);
+        glBindVertexArray(0);
+        mIsInited = false;
+    }
 }

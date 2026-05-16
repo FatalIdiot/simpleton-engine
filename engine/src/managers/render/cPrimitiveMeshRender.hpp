@@ -15,6 +15,8 @@ namespace Simpleton {
             void Draw(const Point<int>* pData, unsigned int pointCount);
             void Draw(const Point<int>* pData, const unsigned int* pIndices, unsigned int pointsCount, unsigned int indicesCount);
 
+            void Destroy();
+
         private:
             unsigned int mVBO, mVAO, mEBO;
 

@@ -17,8 +17,6 @@ class SandboxApp : public Simpleton::CApp, public Simpleton::IEventHandler {
     public:
         SandboxApp(unsigned int wWidth, unsigned int wHeight, std::string windowName)
             : Simpleton::CApp(wWidth, wHeight, windowName) {
-                // Register this event handler
-                mEventManager->RegisterHandler(this);
             }
 
         void HandleEvent(const Simpleton::IEvent &event) {
@@ -29,6 +27,8 @@ class SandboxApp : public Simpleton::CApp, public Simpleton::IEventHandler {
 
         void OnInit() override {
             std::cout << "Game Init!\n";
+            // Register this event handler
+            mEventManager->RegisterHandler(this);
         }
 
         void OnUpdate(float dt) override {

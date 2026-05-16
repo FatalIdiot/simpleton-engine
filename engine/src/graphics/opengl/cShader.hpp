@@ -26,6 +26,8 @@ namespace Simpleton {
             CShader();
             ~CShader();
 
+            void Destroy();
+            
             bool CheckProgramValid();
 
             bool AddShaderSource(ShaderType type, const char* code);
