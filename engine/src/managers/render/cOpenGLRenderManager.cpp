@@ -14,6 +14,8 @@ namespace Simpleton {
         *mpLogger << "Render Manager init...\n";
 
         SetClearColor(0.0f, 0.0f, 0.0f);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         mPrimitiveShader.AddShaderSource(ShaderType::VertexShader, "#version 330 core\n"
             "layout (location = 0) in ivec2 aPos;\n"
@@ -32,6 +34,27 @@ namespace Simpleton {
         if(!mPrimitiveShader.Compile()) {
             *mpLogger << "\nOGL Renderer init ERROR: Failed to compile primitive shader!\n";
             *mpLogger << mPrimitiveShader.GetErrorLog() << "\n\n";
+        }
+
+        mCircleShader.AddShaderSource(ShaderType::VertexShader, "#version 330 core\n"
+            "layout (location = 0) in ivec2 aPos;\n"
+            "uniform mat4 orthoMat;"
+            "void main()\n"
+            "{\n"
+            "   gl_Position = orthoMat * vec4(vec2(aPos), 1.0, 1.0);\n"
+            "}\0");
+        mCircleShader.AddShaderSource(ShaderType::FragmentShader, "#version 330 core\n"
+            "out vec4 FragColor;\n"
+            "layout(origin_upper_left) in vec4 gl_FragCoord;\n"
+            "uniform vec4 Color;\n"
+            "uniform vec3 CenterPointRadius;\n"
+            "void main()\n"
+            "{\n"
+            "   FragColor = (length(gl_FragCoord.xy - CenterPointRadius.xy) < CenterPointRadius.z) ? Color : vec4(0.0);\n"
+            "}\0");
+        if(!mCircleShader.Compile()) {
+            *mpLogger << "\nOGL Renderer init ERROR: Failed to compile cirlce shader!\n";
+            *mpLogger << mCircleShader.GetErrorLog() << "\n\n";
         }
 
         mIsInitialized = true;
@@ -99,6 +122,32 @@ namespace Simpleton {
         SetGlobalUniforms(mPrimitiveShader.GetProgId());
 
         mPrimitiveMesh.Draw(rect.GetVerts().data(), indeces, 4, 6);
+    }
+
+    void COpenGLRenderManager::FillCircle(Circle<int> circle, Color<float> color) {
+        CDependencyResolver* depResolver = reinterpret_cast<CDependencyResolver*>(glfwGetWindowUserPointer(mWindow));
+        unsigned int indeces[] = {0, 1, 3, 1, 2, 3};
+
+        Point<int> rect[] = {
+            { circle.center.x - circle.r, circle.center.y - circle.r },
+            { circle.center.x + circle.r, circle.center.y - circle.r },
+            { circle.center.x + circle.r, circle.center.y + circle.r },
+            { circle.center.x - circle.r, circle.center.y + circle.r }
+        };
+
+        mCircleShader.Bind();
+        mCircleShader.SetUniform("Color", color.r, color.g, color.b, color.a);
+
+        Point<unsigned int> windowSize = depResolver->GetWindowManager()->GetWindowSize();
+        glm::mat4 orthoMat = glm::ortho(0.0f, static_cast<float>(windowSize.x), static_cast<float>(windowSize.y), 1.0f);
+        mCircleShader.SetUniform("orthoMat", orthoMat);
+
+        mCircleShader.SetUniform("CenterPointRadius", static_cast<float>(circle.center.x), static_cast<float>(circle.center.y),
+            static_cast<float>(circle.r));
+
+        SetGlobalUniforms(mCircleShader.GetProgId());
+
+        mPrimitiveMesh.Draw(rect, indeces, 4, 6);
     }
 
     void COpenGLRenderManager::PrepareFrame() {

@@ -4,6 +4,7 @@
 #include "simpleton/util/primitives/triangle.hpp"
 #include "simpleton/util/primitives/rect.hpp"
 #include "simpleton/util/primitives/color.hpp"
+#include "simpleton/util/primitives/circle.hpp"
 
 namespace Simpleton {
     class IRenderManager : private IManager {
@@ -13,5 +14,6 @@ namespace Simpleton {
 
             virtual void FillTriangle(Triangle<int> triangle, Color<float> color, float rotation = 0) = 0;
             virtual void FillRect(Rect<int> rect, Color<float> color, float rotation = 0) = 0;
+            virtual void FillCircle(Circle<int> circle, Color<float> color) = 0;
     };
 }

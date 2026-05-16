@@ -7,6 +7,7 @@
 #include "simpleton/util/primitives/triangle.hpp"
 #include "simpleton/util/primitives/rect.hpp"
 #include "simpleton/util/primitives/color.hpp"
+#include "simpleton/util/primitives/circle.hpp"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -25,11 +26,13 @@ namespace Simpleton {
 
             void FillTriangle(Triangle<int> triangle, Color<float> color, float rotation = 0) override;
             void FillRect(Rect<int> rect, Color<float> color, float rotation = 0) override;
+            void FillCircle(Circle<int> circle, Color<float> color) override;
 
         private:
             std::shared_ptr<CDependencyResolver> mpDepResolver = nullptr;
             GLFWwindow *mWindow;
             CShader mPrimitiveShader;
+            CShader mCircleShader;
             CPrimitiveMeshRender mPrimitiveMesh;
 
             // Sets common uniforms to shader

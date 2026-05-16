@@ -46,6 +46,11 @@ class SandboxApp : public Simpleton::CApp, public Simpleton::IEventHandler {
                 {1.0f, 0.0f, 0.0f, 1.0f},
                 rotationAng
             );
+
+            mRenderManager->FillCircle(
+                {{WIN_WIDTH / 2, WIN_HEIGHT / 2}, 50},
+                {1.0f, 0.0f, 0.0f, 1.0f}
+            );
         }
 
         void OnDestroy() override {

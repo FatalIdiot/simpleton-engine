@@ -35,7 +35,9 @@ namespace Simpleton {
 
             // set uniforms
             void SetUniform(const char* name, float x, float y, float z, float w);
+            void SetUniform(const char* name, float x, float y, float z);
             void SetUniform(const char* name, float x, float y);
+            void SetUniform(const char* name, int x, int y, int z);
             void SetUniform(const char* name, int i);
             void SetUniform(const char* name, float f);
             void SetUniform(const char* name, glm::mat4 matrix);
