@@ -152,7 +152,8 @@ namespace Simpleton {
         mPrimitiveMesh.Draw(rect, indeces, 4, 6, RenderMode::RenderTriangle);
     }
 
-    void COpenGLRenderManager::DrawLines(Point<int> points[], unsigned int pointCount, Color<float> color) {
+    void COpenGLRenderManager::DrawLines(Point<int> points[], unsigned int pointCount, Color<float> color, unsigned int lineWidth) {
+        glLineWidth(lineWidth);
         CDependencyResolver* depResolver = reinterpret_cast<CDependencyResolver*>(glfwGetWindowUserPointer(mWindow));
         Point<unsigned int> windowSize = depResolver->GetWindowManager()->GetWindowSize();
         glm::mat4 orthoMat = glm::ortho(0.0f, static_cast<float>(windowSize.x), static_cast<float>(windowSize.y), 1.0f);
@@ -162,6 +163,7 @@ namespace Simpleton {
         mPrimitiveShader.SetUniform("vertMat", orthoMat);
 
         mPrimitiveMesh.Draw(points, pointCount, RenderMode::RenderLines);
+        glLineWidth(1);
     }
 
     void COpenGLRenderManager::PrepareFrame() {

@@ -59,7 +59,7 @@ class SandboxApp : public Simpleton::CApp, public Simpleton::IEventHandler {
                 { WIN_WIDTH, 0 }
             };
             mRenderManager->DrawLines(points, 4, 
-                {0.0f, 0.0f, 1.0f, 1.0f}
+                {0.0f, 0.0f, 1.0f, 1.0f}, 5
             );
         }
 
