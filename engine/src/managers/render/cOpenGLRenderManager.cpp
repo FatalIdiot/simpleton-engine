@@ -47,10 +47,16 @@ namespace Simpleton {
             "out vec4 FragColor;\n"
             "layout(origin_upper_left) in vec4 gl_FragCoord;\n"
             "uniform vec4 Color;\n"
+            "uniform int lineWidth;\n"
             "uniform vec3 CenterPointRadius;\n"
             "void main()\n"
             "{\n"
-            "   FragColor = (length(gl_FragCoord.xy - CenterPointRadius.xy) < CenterPointRadius.z) ? Color : vec4(0.0);\n"
+            "   float lengthFromCenter = length(gl_FragCoord.xy - CenterPointRadius.xy);\n"
+            "   if(lineWidth == 0) {\n"
+            "       FragColor = lengthFromCenter < CenterPointRadius.z ? Color : vec4(0.0);\n"
+            "   } else {\n"
+            "       FragColor = ((lengthFromCenter < CenterPointRadius.z) && (lengthFromCenter >= CenterPointRadius.z - lineWidth)) ? Color : vec4(0.0);\n"
+            "   }\n"
             "}\0");
         if(!mCircleShader.Compile()) {
             *mpLogger << "\nOGL Renderer init ERROR: Failed to compile cirlce shader!\n";
@@ -126,7 +132,8 @@ namespace Simpleton {
         mPrimitiveMesh.Draw(rect.GetVerts().data(), indeces, 4, 6, RenderMode::RenderTriangle);
     }
 
-    void COpenGLRenderManager::FillCircle(Circle<int> circle, Color<float> color) {
+    // if 'lineWIdth' == 0 - call FillCircle, if line is specified - render DrawCircle
+    void COpenGLRenderManager::RenderCircleInternal(Circle<int> circle, Color<float> color, int lineWidth) {
         CDependencyResolver* depResolver = reinterpret_cast<CDependencyResolver*>(glfwGetWindowUserPointer(mWindow));
         Point<unsigned int> windowSize = depResolver->GetWindowManager()->GetWindowSize();
         glm::mat4 orthoMat = glm::ortho(0.0f, static_cast<float>(windowSize.x), static_cast<float>(windowSize.y), 1.0f);
@@ -143,6 +150,7 @@ namespace Simpleton {
         mCircleShader.Bind();
         mCircleShader.SetUniform("Color", color.r, color.g, color.b, color.a);
         mCircleShader.SetUniform("orthoMat", orthoMat);
+        mCircleShader.SetUniform("lineWidth", lineWidth);
 
         mCircleShader.SetUniform("CenterPointRadius", static_cast<float>(circle.center.x), static_cast<float>(circle.center.y),
             static_cast<float>(circle.r));
@@ -152,7 +160,15 @@ namespace Simpleton {
         mPrimitiveMesh.Draw(rect, indeces, 4, 6, RenderMode::RenderTriangle);
     }
 
-    void COpenGLRenderManager::DrawLines(Point<int> points[], unsigned int pointCount, Color<float> color, unsigned int lineWidth) {
+    void COpenGLRenderManager::FillCircle(Circle<int> circle, Color<float> color) {
+        RenderCircleInternal(circle, color, 0);
+    }
+
+    void COpenGLRenderManager::DrawCircle(Circle<int> circle, Color<float> color, int lineWidth) {
+        RenderCircleInternal(circle, color, lineWidth);
+    }
+
+    void COpenGLRenderManager::DrawLines(Point<int> points[], unsigned int pointCount, Color<float> color, int lineWidth) {
         glLineWidth(lineWidth);
         CDependencyResolver* depResolver = reinterpret_cast<CDependencyResolver*>(glfwGetWindowUserPointer(mWindow));
         Point<unsigned int> windowSize = depResolver->GetWindowManager()->GetWindowSize();

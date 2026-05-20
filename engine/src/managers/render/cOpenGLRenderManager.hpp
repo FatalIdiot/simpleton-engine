@@ -27,9 +27,12 @@ namespace Simpleton {
             void FillTriangle(Triangle<int> triangle, Color<float> color, float rotation = 0) override;
             void FillRect(Rect<int> rect, Color<float> color, float rotation = 0) override;
             void FillCircle(Circle<int> circle, Color<float> color) override;
-            void DrawLines(Point<int> points[], unsigned int pointCount, Color<float> color, unsigned int lineWidth = 1) override;
+            void DrawCircle(Circle<int> circle, Color<float> color, int lineWidth = 1) override;
+            void DrawLines(Point<int> points[], unsigned int pointCount, Color<float> color, int lineWidth = 1) override;
 
         private:
+            void RenderCircleInternal(Circle<int> circle, Color<float> color, int lineWidth);
+
             std::shared_ptr<CDependencyResolver> mpDepResolver = nullptr;
             GLFWwindow *mWindow;
             CShader mPrimitiveShader;

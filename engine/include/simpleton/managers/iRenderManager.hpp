@@ -15,6 +15,7 @@ namespace Simpleton {
             virtual void FillTriangle(Triangle<int> triangle, Color<float> color, float rotation = 0) = 0;
             virtual void FillRect(Rect<int> rect, Color<float> color, float rotation = 0) = 0;
             virtual void FillCircle(Circle<int> circle, Color<float> color) = 0;
-            virtual void DrawLines(Point<int> points[], unsigned int pointCount, Color<float> color, unsigned int lineWidth = 1) = 0;
+            virtual void DrawCircle(Circle<int> circle, Color<float> color, int lineWIdth = 1) = 0;
+            virtual void DrawLines(Point<int> points[], unsigned int pointCount, Color<float> color, int lineWidth = 1) = 0;
     };
 }

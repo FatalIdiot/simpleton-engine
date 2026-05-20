@@ -52,6 +52,12 @@ class SandboxApp : public Simpleton::CApp, public Simpleton::IEventHandler {
                 {1.0f, 0.0f, 0.0f, 1.0f}
             );
 
+            mRenderManager->DrawCircle(
+                {{WIN_WIDTH / 2 + 100, WIN_HEIGHT / 2 + 100}, 50},
+                {1.0f, 0.0f, 0.0f, 1.0f}, 
+                (unsigned int) 3
+            );
+
             Simpleton::Point<int> points[] = {
                 { 0, 0 },
                 { WIN_WIDTH, WIN_HEIGHT },
