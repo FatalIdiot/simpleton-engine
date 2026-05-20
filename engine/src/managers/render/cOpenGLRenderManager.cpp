@@ -76,14 +76,13 @@ namespace Simpleton {
 
     void COpenGLRenderManager::FillTriangle(Triangle<int> triangle, Color<float> color, float rotation) {
         CDependencyResolver* depResolver = reinterpret_cast<CDependencyResolver*>(glfwGetWindowUserPointer(mWindow));
-        
+        Point<unsigned int> windowSize = depResolver->GetWindowManager()->GetWindowSize();
+        glm::mat4 orthoMat = glm::ortho(0.0f, static_cast<float>(windowSize.x), static_cast<float>(windowSize.y), 1.0f);
+
         mPrimitiveShader.Bind();
         mPrimitiveShader.SetUniform("Color", color.r, color.g, color.b, color.a);
 
-        Point<unsigned int> windowSize = depResolver->GetWindowManager()->GetWindowSize();
         Point<int> centerPoint = triangle.GetCenterPoint();
-
-        glm::mat4 orthoMat = glm::ortho(0.0f, static_cast<float>(windowSize.x), static_cast<float>(windowSize.y), 1.0f);
         glm::mat4 vertMat(1.0f);
         vertMat = glm::translate(vertMat, glm::vec3(centerPoint.x, centerPoint.y, 0.0f));
         vertMat = glm::rotate(vertMat, glm::radians(rotation), glm::vec3(0.0f, 0.0f, 1.0f));
@@ -93,20 +92,20 @@ namespace Simpleton {
 
         SetGlobalUniforms(mPrimitiveShader.GetProgId());
 
-        mPrimitiveMesh.Draw(triangle.GetPoints().data(), 3);
+        mPrimitiveMesh.Draw(triangle.GetPoints().data(), 3, RenderMode::RenderTriangle);
     }
 
     void COpenGLRenderManager::FillRect(Rect<int> rect, Color<float> color, float rotation) {
         CDependencyResolver* depResolver = reinterpret_cast<CDependencyResolver*>(glfwGetWindowUserPointer(mWindow));
+        Point<unsigned int> windowSize = depResolver->GetWindowManager()->GetWindowSize();
+        glm::mat4 orthoMat = glm::ortho(0.0f, static_cast<float>(windowSize.x), static_cast<float>(windowSize.y), 1.0f);
+
         unsigned int indeces[] = {0, 1, 3, 1, 2, 3};
 
         mPrimitiveShader.Bind();
         mPrimitiveShader.SetUniform("Color", color.r, color.g, color.b, color.a);
 
-        Point<unsigned int> windowSize = depResolver->GetWindowManager()->GetWindowSize();
         Point<int> centerPoint = rect.GetCenterPoint();
-
-        glm::mat4 orthoMat = glm::ortho(0.0f, static_cast<float>(windowSize.x), static_cast<float>(windowSize.y), 1.0f);
         glm::mat4 vertMat(1.0f);
         vertMat = glm::translate(vertMat, glm::vec3(
             centerPoint.x, 
@@ -124,11 +123,14 @@ namespace Simpleton {
 
         SetGlobalUniforms(mPrimitiveShader.GetProgId());
 
-        mPrimitiveMesh.Draw(rect.GetVerts().data(), indeces, 4, 6);
+        mPrimitiveMesh.Draw(rect.GetVerts().data(), indeces, 4, 6, RenderMode::RenderTriangle);
     }
 
     void COpenGLRenderManager::FillCircle(Circle<int> circle, Color<float> color) {
         CDependencyResolver* depResolver = reinterpret_cast<CDependencyResolver*>(glfwGetWindowUserPointer(mWindow));
+        Point<unsigned int> windowSize = depResolver->GetWindowManager()->GetWindowSize();
+        glm::mat4 orthoMat = glm::ortho(0.0f, static_cast<float>(windowSize.x), static_cast<float>(windowSize.y), 1.0f);
+
         unsigned int indeces[] = {0, 1, 3, 1, 2, 3};
 
         Point<int> rect[] = {
@@ -140,9 +142,6 @@ namespace Simpleton {
 
         mCircleShader.Bind();
         mCircleShader.SetUniform("Color", color.r, color.g, color.b, color.a);
-
-        Point<unsigned int> windowSize = depResolver->GetWindowManager()->GetWindowSize();
-        glm::mat4 orthoMat = glm::ortho(0.0f, static_cast<float>(windowSize.x), static_cast<float>(windowSize.y), 1.0f);
         mCircleShader.SetUniform("orthoMat", orthoMat);
 
         mCircleShader.SetUniform("CenterPointRadius", static_cast<float>(circle.center.x), static_cast<float>(circle.center.y),
@@ -150,7 +149,19 @@ namespace Simpleton {
 
         SetGlobalUniforms(mCircleShader.GetProgId());
 
-        mPrimitiveMesh.Draw(rect, indeces, 4, 6);
+        mPrimitiveMesh.Draw(rect, indeces, 4, 6, RenderMode::RenderTriangle);
+    }
+
+    void COpenGLRenderManager::DrawLines(Point<int> points[], unsigned int pointCount, Color<float> color) {
+        CDependencyResolver* depResolver = reinterpret_cast<CDependencyResolver*>(glfwGetWindowUserPointer(mWindow));
+        Point<unsigned int> windowSize = depResolver->GetWindowManager()->GetWindowSize();
+        glm::mat4 orthoMat = glm::ortho(0.0f, static_cast<float>(windowSize.x), static_cast<float>(windowSize.y), 1.0f);
+
+        mPrimitiveShader.Bind();
+        mPrimitiveShader.SetUniform("Color", color.r, color.g, color.b, color.a);
+        mPrimitiveShader.SetUniform("vertMat", orthoMat);
+
+        mPrimitiveMesh.Draw(points, pointCount, RenderMode::RenderLines);
     }
 
     void COpenGLRenderManager::PrepareFrame() {

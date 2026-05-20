@@ -6,14 +6,17 @@
 #include <GLFW/glfw3.h>
 
 namespace Simpleton {
+    enum RenderMode { RenderTriangle = GL_TRIANGLES, RenderLines = GL_LINES };
+    
     class CPrimitiveMeshRender {
         public:
             CPrimitiveMeshRender();
             ~CPrimitiveMeshRender();
 
             // Make draw call for this mesh
-            void Draw(const Point<int>* pData, unsigned int pointCount);
-            void Draw(const Point<int>* pData, const unsigned int* pIndices, unsigned int pointsCount, unsigned int indicesCount);
+            void Draw(const Point<int>* pData, unsigned int pointCount, RenderMode renderMode);
+            void Draw(const Point<int>* pData, const unsigned int* pIndices, unsigned int pointsCount, 
+                unsigned int indicesCount, RenderMode renderMode);
 
             void Destroy();
 

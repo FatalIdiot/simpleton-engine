@@ -51,6 +51,16 @@ class SandboxApp : public Simpleton::CApp, public Simpleton::IEventHandler {
                 {{WIN_WIDTH / 2, WIN_HEIGHT / 2}, 50},
                 {1.0f, 0.0f, 0.0f, 1.0f}
             );
+
+            Simpleton::Point<int> points[] = {
+                { 0, 0 },
+                { WIN_WIDTH, WIN_HEIGHT },
+                { 0, WIN_HEIGHT },
+                { WIN_WIDTH, 0 }
+            };
+            mRenderManager->DrawLines(points, 4, 
+                {0.0f, 0.0f, 1.0f, 1.0f}
+            );
         }
 
         void OnDestroy() override {

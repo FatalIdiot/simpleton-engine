@@ -20,7 +20,7 @@ namespace Simpleton {
         mIsInited = true;
     }
 
-    void CPrimitiveMeshRender::Draw(const Point<int>* pData, unsigned int pointCount) {
+    void CPrimitiveMeshRender::Draw(const Point<int>* pData, unsigned int pointCount, RenderMode renderMode) {
         Init();
 
         glBindVertexArray(mVAO);
@@ -28,10 +28,12 @@ namespace Simpleton {
         glVertexAttribIPointer(0, 2, GL_INT, sizeof(Point<int>), (void*)0);
         glEnableVertexAttribArray(0);  
         
-        glDrawArrays(GL_TRIANGLES, 0, pointCount);
+        glDrawArrays(renderMode, 0, pointCount);
     }
 
-    void CPrimitiveMeshRender::Draw(const Point<int>* pData, const unsigned int* pIndices, unsigned int pointsCount, unsigned int indicesCount) {
+    void CPrimitiveMeshRender::Draw(const Point<int>* pData, const unsigned int* pIndices, unsigned int pointsCount, 
+        unsigned int indicesCount, RenderMode renderMode
+    ) {
         Init();
 
         glBindVertexArray(mVAO);
@@ -41,7 +43,7 @@ namespace Simpleton {
         glVertexAttribIPointer(0, 2, GL_INT, sizeof(Point<int>), (void*)0);
         glEnableVertexAttribArray(0);  
 
-        glDrawElements(GL_TRIANGLES, indicesCount, GL_UNSIGNED_INT, 0);
+        glDrawElements(renderMode, indicesCount, GL_UNSIGNED_INT, 0);
     }
 
     void CPrimitiveMeshRender::Destroy() {

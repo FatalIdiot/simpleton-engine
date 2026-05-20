@@ -27,6 +27,7 @@ namespace Simpleton {
             void FillTriangle(Triangle<int> triangle, Color<float> color, float rotation = 0) override;
             void FillRect(Rect<int> rect, Color<float> color, float rotation = 0) override;
             void FillCircle(Circle<int> circle, Color<float> color) override;
+            void DrawLines(Point<int> points[], unsigned int pointCount, Color<float> color) override;
 
         private:
             std::shared_ptr<CDependencyResolver> mpDepResolver = nullptr;
