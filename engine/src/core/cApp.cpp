@@ -6,6 +6,7 @@
 #include "../managers/cWindowManager.hpp"
 #include "../managers/cEventManager.hpp"
 #include "../managers/cInputManager.hpp"
+#include "../managers/cResourceManager.hpp";
 #include "../managers/render/cOpenGLRenderManager.hpp"
 
 #include "simpleton/events/cEventSecondPassed.hpp"
@@ -23,6 +24,8 @@ namespace Simpleton {
         mEventManager = mpImplem->eventManager;
         mpImplem->inputManager = std::make_shared<CInputManager>();
         mInputManager = mpImplem->inputManager;
+        mpImplem->resourceManager = std::make_shared<CResourceManager>();
+        mResourceManager = mpImplem->resourceManager;
         mpImplem->renderManager = std::make_shared<COpenGLRenderManager>();
         mRenderManager = mpImplem->renderManager;
 
@@ -43,6 +46,7 @@ namespace Simpleton {
         
         mpImplem->eventManager->OnInit(mpImplem->depResolver);
         mpImplem->inputManager->OnInit(mpImplem->depResolver);
+        mpImplem->resourceManager->OnInit();
         mpImplem->renderManager->OnInit(mpImplem->depResolver);
 
         mpImplem->eventManager->RegisterHandler(mpImplem->inputManager.get());
@@ -54,6 +58,7 @@ namespace Simpleton {
     void CApp::OnDestroy() {
         *mpImplem->logger << "Engine destroy...\n";
         mpImplem->renderManager->OnDestroy();
+        mpImplem->resourceManager->OnDestroy();
         mpImplem->inputManager->OnDestroy();
         mpImplem->eventManager->OnDestroy();
         mpImplem->windowManager->OnDestroy();

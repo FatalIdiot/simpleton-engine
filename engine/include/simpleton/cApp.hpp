@@ -3,6 +3,7 @@
 #include "simpleton/managers/iWindowManager.hpp"
 #include "simpleton/managers/iEventManager.hpp"
 #include "simpleton/managers/iInputManager.hpp"
+#include "simpleton/managers/iResourceManager.hpp";
 #include "simpleton/managers/iRenderManager.hpp"
 
 #include <memory>
@@ -27,6 +28,7 @@ namespace Simpleton {
             std::shared_ptr<IWindowManager> mWindowManager;
             std::shared_ptr<IEventManager> mEventManager;
             std::shared_ptr<IInputManager> mInputManager;
+            std::shared_ptr<IResourceManager> mResourceManager;
             std::shared_ptr<IRenderManager> mRenderManager;
             
         protected:
