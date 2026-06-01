@@ -3,7 +3,7 @@
 #include "simpleton/managers/iWindowManager.hpp"
 #include "simpleton/managers/iEventManager.hpp"
 #include "simpleton/managers/iInputManager.hpp"
-#include "simpleton/managers/iResourceManager.hpp";
+#include "simpleton/managers/iResourceManager.hpp"
 #include "simpleton/managers/iRenderManager.hpp"
 
 #include <memory>

@@ -1,6 +1,6 @@
 file(GLOB_RECURSE ENGINE_SOURCES
     src/*.cpp
-    ../vendor/glad/src/glad.c
+    src/vendor/glad/src/glad.c
 )
 
 add_library(simpleton_engine STATIC ${ENGINE_SOURCES})
@@ -8,7 +8,8 @@ add_library(simpleton_engine STATIC ${ENGINE_SOURCES})
 target_include_directories(simpleton_engine
     PUBLIC
     include
-    ../vendor/glad/include
+    src/vendor/
+    src/vendor/glad/include
 )
 
 

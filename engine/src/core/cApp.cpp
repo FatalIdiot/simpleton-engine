@@ -6,7 +6,7 @@
 #include "../managers/cWindowManager.hpp"
 #include "../managers/cEventManager.hpp"
 #include "../managers/cInputManager.hpp"
-#include "../managers/cResourceManager.hpp";
+#include "../managers/cResourceManager.hpp"
 #include "../managers/render/cOpenGLRenderManager.hpp"
 
 #include "simpleton/events/cEventSecondPassed.hpp"
@@ -46,7 +46,7 @@ namespace Simpleton {
         
         mpImplem->eventManager->OnInit(mpImplem->depResolver);
         mpImplem->inputManager->OnInit(mpImplem->depResolver);
-        mpImplem->resourceManager->OnInit();
+        mpImplem->resourceManager->OnInit(mpImplem->depResolver);
         mpImplem->renderManager->OnInit(mpImplem->depResolver);
 
         mpImplem->eventManager->RegisterHandler(mpImplem->inputManager.get());

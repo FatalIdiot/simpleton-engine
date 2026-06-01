@@ -1,6 +1,6 @@
 #pragma once
 
-#include "./point.hpp";
+#include "./point.hpp"
 
 namespace Simpleton {
     template <typename T>
