@@ -1,13 +1,22 @@
 #pragma once
 
+#include <memory>
+
 #include "simpleton/resources/iTexture.hpp"
+#include "../util/cLog.hpp"
 
 namespace Simpleton {
-    class COpenGLTexture : public ITexture {
+    class COpenGLTexture : private ITexture {
         private:
             unsigned int mTextureId;
+            std::shared_ptr<CLogger> mpLogger;
 
         public:
-            bool LoadData(int width, int height, int channelsCount, unsigned char* data) override;
+            ~COpenGLTexture();
+            
+            void Bind();
+            void Unbind();
+            bool Init();
+            bool LoadData(unsigned char* data, int width, int height, int channelsCount = 3) override;
     };
 }

@@ -1,12 +1,21 @@
 #pragma once
 
 namespace Simpleton {
+    enum class TextureState {
+        Uninited, Empty, Loaded, Corrupted
+    };
+    enum class TextureLoadType {
+        None, Data, File
+    };
+
     class ITexture {
-        private:
+        protected:
             int mWidth, mHeight, mChannelsCount;
             unsigned char *mData;
+            TextureState mState = TextureState::Uninited;
+            TextureLoadType mLoadType = TextureLoadType::None;
 
         public:
-            virtual bool LoadData(int width, int height, int channelsCount, unsigned char* data) = 0;
+            virtual bool LoadData(unsigned char* data, int width, int height, int channelsCount = 3) = 0;
     };
 }
