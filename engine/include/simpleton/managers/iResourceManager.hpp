@@ -9,7 +9,7 @@
 namespace Simpleton {
     class IResourceManager : private IManager {
         public:
-            // virtual void AddTexture(std::string textureName, std::shared_ptr<ITexture> texture) = 0;
-            // virtual std::shared_ptr<ITexture> GetTexture(std::string textureName) = 0;
+            virtual void AddTexture(std::string textureName, std::shared_ptr<ITexture> texture) = 0;
+            virtual std::shared_ptr<ITexture> GetTexture(std::string textureName) = 0;
     };
 }

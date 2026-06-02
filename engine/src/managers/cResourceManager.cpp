@@ -19,9 +19,11 @@ namespace Simpleton {
                 defaultTextureData[i * 3 + 2] = 0;
             }
         }
-        // Texture* defaultTexture = new Texture(defaultTextureSize, defaultTextureSize, 3, defaultTextureData);
+        // COpenGLTexture defaultTexture;
+        std::shared_ptr<COpenGLTexture> defaultTexture = std::make_shared<COpenGLTexture>();
+        defaultTexture->LoadData(defaultTextureData, defaultTextureSize, defaultTextureSize, defaultTextureChannels);
         // defaultTexture->SetFiltering(TextureFiltering::Nearest);
-        // AddTexture("default", defaultTexture);
+        AddTexture("default", defaultTexture);
 
         mIsInitialized = true;
         return mIsInitialized;
@@ -32,7 +34,16 @@ namespace Simpleton {
         mTextures.clear();
     }
 
-    // ITexture CResourceManager::(std::string textureName) {
-        
-    // }
+    void CResourceManager::AddTexture(std::string textureName, std::shared_ptr<ITexture> texture) {
+        mTextures[textureName] = texture;
+    }
+
+    std::shared_ptr<ITexture> CResourceManager::GetTexture(std::string textureName) {
+        try {
+            return mTextures[textureName];
+        } catch (const std::out_of_range& e) {
+            *mpLogger << "Resource Manager: texture '" << textureName << "' does not exist.\n";
+            return mTextures["default"];
+        }
+    }
 }

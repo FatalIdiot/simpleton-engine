@@ -16,6 +16,14 @@ namespace Simpleton {
             TextureLoadType mLoadType = TextureLoadType::None;
 
         public:
+            virtual ~ITexture() = default;
+
+            int GetWidth() { return mWidth; }
+            int GetHeight() { return mHeight; }
+            unsigned char* GetData() { return mData; }
+            TextureState GetState() { return mState; }
+            TextureLoadType GetLoadType() { return mLoadType; }
+
             virtual bool LoadData(unsigned char* data, int width, int height, int channelsCount = 3) = 0;
     };
 }

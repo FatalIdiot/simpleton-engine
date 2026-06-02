@@ -6,14 +6,18 @@
 #include "../util/cLog.hpp"
 
 namespace Simpleton {
-    class COpenGLTexture : private ITexture {
+    class COpenGLTexture : public ITexture {
         private:
             unsigned int mTextureId;
             std::shared_ptr<CLogger> mpLogger;
 
         public:
-            ~COpenGLTexture();
+            ~COpenGLTexture() override
             
+            unsigned int GetTextureId() {
+                return mTextureId;
+            }
+
             void Bind();
             void Unbind();
             bool Init();

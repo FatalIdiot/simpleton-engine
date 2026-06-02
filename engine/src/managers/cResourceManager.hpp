@@ -19,12 +19,13 @@ namespace Simpleton
         private:
             std::shared_ptr<CLogger> mpLogger;
 
-            std::map<std::string, std::shared_ptr<COpenGLTexture>> mTextures;
+            std::map<std::string, std::shared_ptr<ITexture>> mTextures;
 
         public:
             bool OnInit(std::shared_ptr<CDependencyResolver> depResolver);
             void OnDestroy();
 
-            // std::shared_ptr<ITexture> GetTexture(std::string textureName);
+            void CResourceManager::AddTexture(std::string textureName, std::shared_ptr<ITexture> texture) override;
+            std::shared_ptr<ITexture> CResourceManager::GetTexture(std::string textureName) override;
     };
 }
