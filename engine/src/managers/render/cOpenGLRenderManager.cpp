@@ -1,5 +1,8 @@
 #include <array>
 
+#include "../cResourceManager.hpp"
+#include "../../resources/cOpenGLTexture.hpp"
+
 #include "simpleton/util/primitives/point.hpp"
 #include "./cOpenGLRenderManager.hpp"
 #include "../cWindowManager.hpp"
@@ -17,6 +20,7 @@ namespace Simpleton {
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+        // Shader used for drawing untextured primitives
         mPrimitiveShader.AddShaderSource(ShaderType::VertexShader, "#version 330 core\n"
             "layout (location = 0) in ivec2 aPos;\n"
             "uniform mat4 vertMat;"
@@ -36,6 +40,31 @@ namespace Simpleton {
             *mpLogger << mPrimitiveShader.GetErrorLog() << "\n\n";
         }
 
+        // Shader used for drawing textured primitives
+        mPrimitiveTexturedShader.AddShaderSource(ShaderType::VertexShader, "#version 330 core\n"
+            "layout (location = 0) in ivec2 aPos;\n"
+            "layout (location = 1) in vec2 aTexCoord;\n"
+            "out vec2 TexCoord;\n"
+            "uniform mat4 vertMat;"
+            "void main()\n"
+            "{\n"
+            "   gl_Position = vertMat * vec4(vec2(aPos), 1.0, 1.0);\n"
+            "   TexCoord = aTexCoord;\n"
+            "}\0");
+        mPrimitiveTexturedShader.AddShaderSource(ShaderType::FragmentShader, "#version 330 core\n"
+            "out vec4 FragColor;\n"
+            "in vec2 TexCoord;\n"
+            "uniform sampler2D texture0;\n"
+            "void main()\n"
+            "{\n"
+            "    FragColor = texture(texture0, TexCoord);\n"
+            "}\0");
+        if(!mPrimitiveTexturedShader.Compile()) {
+            *mpLogger << "\nOGL Renderer init ERROR: Failed to compile primitive textured shader!\n";
+            *mpLogger << mPrimitiveTexturedShader.GetErrorLog() << "\n\n";
+        }
+
+        // Shader used for drawing circles
         mCircleShader.AddShaderSource(ShaderType::VertexShader, "#version 330 core\n"
             "layout (location = 0) in ivec2 aPos;\n"
             "uniform mat4 orthoMat;"
@@ -63,6 +92,8 @@ namespace Simpleton {
             *mpLogger << mCircleShader.GetErrorLog() << "\n\n";
         }
 
+        mPrimitiveMeshRenderer.Init();
+
         mIsInitialized = true;
         return true;
     }
@@ -70,7 +101,7 @@ namespace Simpleton {
         *mpLogger << "Render Manager destroy...\n";
         mPrimitiveShader.Destroy();
         mCircleShader.Destroy();
-        mPrimitiveMesh.Destroy();
+        mPrimitiveMeshRenderer.Destroy();
     }
 
     void COpenGLRenderManager::SetClearColor(float r, float g, float b) {
@@ -98,7 +129,7 @@ namespace Simpleton {
 
         SetGlobalUniforms(mPrimitiveShader.GetProgId());
 
-        mPrimitiveMesh.Draw(triangle.GetPoints().data(), 3, RenderMode::RenderTriangle);
+        mPrimitiveMeshRenderer.Draw(triangle.GetPoints().data(), 3, RenderMode::RenderTriangle);
     }
 
     void COpenGLRenderManager::FillRect(Rect<int> rect, Color<float> color, float rotation) {
@@ -129,7 +160,7 @@ namespace Simpleton {
 
         SetGlobalUniforms(mPrimitiveShader.GetProgId());
 
-        mPrimitiveMesh.Draw(rect.GetVerts().data(), indeces, 4, 6, RenderMode::RenderTriangle);
+        mPrimitiveMeshRenderer.Draw(rect.GetVerts().data(), indeces, 4, 6, RenderMode::RenderTriangle);
     }
 
     // if 'lineWIdth' == 0 - call FillCircle, if line is specified - render DrawCircle
@@ -157,7 +188,7 @@ namespace Simpleton {
 
         SetGlobalUniforms(mCircleShader.GetProgId());
 
-        mPrimitiveMesh.Draw(rect, indeces, 4, 6, RenderMode::RenderTriangle);
+        mPrimitiveMeshRenderer.Draw(rect, indeces, 4, 6, RenderMode::RenderTriangle);
     }
 
     void COpenGLRenderManager::FillCircle(Circle<int> circle, Color<float> color) {
@@ -178,8 +209,44 @@ namespace Simpleton {
         mPrimitiveShader.SetUniform("Color", color.r, color.g, color.b, color.a);
         mPrimitiveShader.SetUniform("vertMat", orthoMat);
 
-        mPrimitiveMesh.Draw(points, pointCount, RenderMode::RenderLines);
+        mPrimitiveMeshRenderer.Draw(points, pointCount, RenderMode::RenderLines);
         glLineWidth(1);
+    }
+
+    void COpenGLRenderManager::DrawTexturedRect(Rect<int> rect, std::string textureName, float rotation) {
+        CDependencyResolver* depResolver = reinterpret_cast<CDependencyResolver*>(glfwGetWindowUserPointer(mWindow));
+        std::shared_ptr<CResourceManager> resourceManager = depResolver->GetResourceManager();
+        Point<unsigned int> windowSize = depResolver->GetWindowManager()->GetWindowSize();
+        glm::mat4 orthoMat = glm::ortho(0.0f, static_cast<float>(windowSize.x), static_cast<float>(windowSize.y), 1.0f);
+
+        std::shared_ptr<COpenGLTexture> texture = std::dynamic_pointer_cast<COpenGLTexture>(resourceManager->GetTexture(textureName));
+        texture->Bind();
+
+        unsigned int indeces[] = {0, 1, 3, 1, 2, 3};
+
+        mPrimitiveTexturedShader.Bind();
+
+        Point<int> centerPoint = rect.GetCenterPoint();
+        glm::mat4 vertMat(1.0f);
+        vertMat = glm::translate(vertMat, glm::vec3(
+            centerPoint.x, 
+            centerPoint.y, 
+            0.0f
+        ));
+        vertMat = glm::rotate(vertMat, glm::radians(rotation), glm::vec3(0.0f, 0.0f, 1.0f));
+        vertMat = glm::translate(vertMat, glm::vec3(
+            centerPoint.x * -1, 
+            centerPoint.y * -1, 
+            0.0f
+        ));
+
+        mPrimitiveTexturedShader.SetUniform("vertMat", orthoMat * vertMat);
+
+        SetGlobalUniforms(mPrimitiveTexturedShader.GetProgId());
+
+        // TO DO: Add texture verts to data
+        // TO DO: Add texture verts to VBO to access in shader
+        mPrimitiveMeshRenderer.Draw(rect.GetVerts().data(), indeces, 4, 6, RenderMode::RenderTriangle);
     }
 
     void COpenGLRenderManager::PrepareFrame() {

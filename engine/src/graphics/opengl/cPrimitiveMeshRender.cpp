@@ -21,8 +21,6 @@ namespace Simpleton {
     }
 
     void CPrimitiveMeshRender::Draw(const Point<int>* pData, unsigned int pointCount, RenderMode renderMode) {
-        Init();
-
         glBindVertexArray(mVAO);
         glBufferData(GL_ARRAY_BUFFER, sizeof(Point<int>) * pointCount, pData, GL_STATIC_DRAW);
         glVertexAttribIPointer(0, 2, GL_INT, sizeof(Point<int>), (void*)0);
@@ -34,8 +32,6 @@ namespace Simpleton {
     void CPrimitiveMeshRender::Draw(const Point<int>* pData, const unsigned int* pIndices, unsigned int pointsCount, 
         unsigned int indicesCount, RenderMode renderMode
     ) {
-        Init();
-
         glBindVertexArray(mVAO);
         glBufferData(GL_ARRAY_BUFFER, sizeof(Point<int>) * pointsCount, pData, GL_STATIC_DRAW);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * indicesCount, pIndices, GL_STATIC_DRAW);

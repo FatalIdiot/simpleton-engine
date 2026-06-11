@@ -12,7 +12,7 @@ namespace Simpleton {
             std::shared_ptr<CLogger> mpLogger;
 
         public:
-            ~COpenGLTexture() override
+            ~COpenGLTexture() override;
             
             unsigned int GetTextureId() {
                 return mTextureId;

@@ -30,7 +30,7 @@ namespace Simpleton {
         mRenderManager = mpImplem->renderManager;
 
         mpImplem->depResolver = std::make_shared<CDependencyResolver>(
-            mpImplem->logger, mpImplem->windowManager, mpImplem->eventManager
+            mpImplem->logger, mpImplem->windowManager, mpImplem->eventManager, mpImplem->resourceManager
         );
     };
     CApp::~CApp() {};

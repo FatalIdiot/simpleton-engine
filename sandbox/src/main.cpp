@@ -67,6 +67,12 @@ class SandboxApp : public Simpleton::CApp, public Simpleton::IEventHandler {
             mRenderManager->DrawLines(points, 4, 
                 {0.0f, 0.0f, 1.0f, 1.0f}, 5
             );
+
+            // mRenderManager->DrawTexturedRect(
+            //     {{WIN_WIDTH-200, WIN_HEIGHT-200}, 50, 50},
+            //     "test",
+            //     rotationAng
+            // );
         }
 
         void OnDestroy() override {

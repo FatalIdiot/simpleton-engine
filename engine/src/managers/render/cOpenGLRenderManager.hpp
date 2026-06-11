@@ -2,7 +2,7 @@
 
 #include "./iInternalRenderManager.hpp"
 #include "../../graphics/opengl/cShader.hpp"
-#include "../../managers/render/cPrimitiveMeshRender.hpp"
+#include "../../graphics/opengl/cPrimitiveMeshRender.hpp"
 
 #include "simpleton/util/primitives/triangle.hpp"
 #include "simpleton/util/primitives/rect.hpp"
@@ -29,6 +29,7 @@ namespace Simpleton {
             void FillCircle(Circle<int> circle, Color<float> color) override;
             void DrawCircle(Circle<int> circle, Color<float> color, int lineWidth = 1) override;
             void DrawLines(Point<int> points[], unsigned int pointCount, Color<float> color, int lineWidth = 1) override;
+            void DrawTexturedRect(Rect<int> rect, std::string textureName, float rotation) override;
 
         private:
             void RenderCircleInternal(Circle<int> circle, Color<float> color, int lineWidth);
@@ -36,8 +37,9 @@ namespace Simpleton {
             std::shared_ptr<CDependencyResolver> mpDepResolver = nullptr;
             GLFWwindow *mWindow;
             CShader mPrimitiveShader;
+            CShader mPrimitiveTexturedShader;
             CShader mCircleShader;
-            CPrimitiveMeshRender mPrimitiveMesh;
+            CPrimitiveMeshRender mPrimitiveMeshRenderer;
 
             // Sets common uniforms to shader
             void SetGlobalUniforms(unsigned int shaderProgId);

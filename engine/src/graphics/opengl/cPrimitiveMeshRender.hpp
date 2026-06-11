@@ -10,6 +10,7 @@ namespace Simpleton {
     
     class CPrimitiveMeshRender {
         public:
+            void Init();
             CPrimitiveMeshRender();
             ~CPrimitiveMeshRender();
 
@@ -22,9 +23,6 @@ namespace Simpleton {
 
         private:
             unsigned int mVBO, mVAO, mEBO;
-
-            // Can't always init in constructor before systems are up, manually init check in functions 
             bool mIsInited = false;
-            void Init();
     };
 }

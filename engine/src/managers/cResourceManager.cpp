@@ -19,10 +19,8 @@ namespace Simpleton {
                 defaultTextureData[i * 3 + 2] = 0;
             }
         }
-        // COpenGLTexture defaultTexture;
         std::shared_ptr<COpenGLTexture> defaultTexture = std::make_shared<COpenGLTexture>();
         defaultTexture->LoadData(defaultTextureData, defaultTextureSize, defaultTextureSize, defaultTextureChannels);
-        // defaultTexture->SetFiltering(TextureFiltering::Nearest);
         AddTexture("default", defaultTexture);
 
         mIsInitialized = true;

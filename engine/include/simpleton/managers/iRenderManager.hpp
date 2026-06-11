@@ -17,5 +17,6 @@ namespace Simpleton {
             virtual void FillCircle(Circle<int> circle, Color<float> color) = 0;
             virtual void DrawCircle(Circle<int> circle, Color<float> color, int lineWIdth = 1) = 0;
             virtual void DrawLines(Point<int> points[], unsigned int pointCount, Color<float> color, int lineWidth = 1) = 0;
+            virtual void DrawTexturedRect(Rect<int> rect, std::string textureName, float rotation) = 0;
     };
 }
